@@ -37,11 +37,15 @@ public class KalmanFilter {
 		try {
 			//If simulation read MC::Particle Bank ------------------------------------------------
 			DataBank bankParticle = event.getBank("MC::Particle");
+			double   vxmc         = bankParticle.getFloat("vx", 0);
+			double   vymc         = bankParticle.getFloat("vy", 0);
 			double   vzmc         = bankParticle.getFloat("vz", 0);
 			double   pxmc         = bankParticle.getFloat("px", 0);
 			double   pymc         = bankParticle.getFloat("py", 0);
 			double   pzmc         = bankParticle.getFloat("pz", 0);
-
+			double p_mc = java.lang.Math.sqrt(pxmc*pxmc+pymc*pymc+pzmc*pzmc);
+			//System.out.println("MC track: vz: " + vzmc*10 + " px: " + pxmc*1000 + " py: " + pymc*1000 + " pz: " + pzmc*1000 + "; p = " + p_mc*1000);//convert p to MeV, v to mm
+			
 			ArrayList<Point3D> sim_hits = new ArrayList<>();
 			sim_hits.add(new Point3D(0, 0, vzmc));
 
@@ -56,6 +60,7 @@ public class KalmanFilter {
 				}
 			}
 
+			
 			/*
 			Writer hitsWriter = new FileWriter("hits.dat");
 			for (Point3D p : sim_hits) {
@@ -82,14 +87,17 @@ public class KalmanFilter {
 			final double px0 = tracks.get(0).get_px();
 			final double py0 = tracks.get(0).get_py();
 			final double pz0 = tracks.get(0).get_pz();
+			final double p_init = java.lang.Math.sqrt(px0*px0+py0*py0+pz0*pz0);
 			double[]     y   = new double[]{x0, y0, z0, px0, py0, pz0};
-			// System.out.println("y = " + Arrays.toString(y));
+			//double[]     y   = new double[]{vxmc, vymc, vzmc, pxmc, pymc, pzmc};
+			//System.out.println("y = " + x0 + ", " + y0 + ", " + z0 + ", " + px0 + ", " + py0 + ", " + pz0 + "; p = " +  p_init);
 
 			// Initialization hit
 			// System.out.println("tracks = " + tracks);
 			ArrayList<org.jlab.rec.ahdc.Hit.Hit> AHDC_hits = tracks.get(0).getHits();
 			ArrayList<Hit>                       KF_hits   = new ArrayList<>();
 			for (org.jlab.rec.ahdc.Hit.Hit AHDC_hit : AHDC_hits) {
+			    //System.out.println("Superlayer = " + AHDC_hit.getSuperLayerId() + ", Layer " + AHDC_hit.getLayerId() + ", Wire " + AHDC_hit.getWireId() + ", Nwires " + AHDC_hit.getNbOfWires() + ", Radius " + AHDC_hit.getRadius() + ", DOCA " + AHDC_hit.getDoca());
 				Hit hit = new Hit(AHDC_hit.getSuperLayerId(), AHDC_hit.getLayerId(), AHDC_hit.getWireId(), AHDC_hit.getNbOfWires(), AHDC_hit.getRadius(), AHDC_hit.getDoca());
 
 				// Do delete hit with same radius
@@ -125,7 +133,7 @@ public class KalmanFilter {
 
 			// Initialization of the Kalman Fitter
 			RealVector initialStateEstimate   = new ArrayRealVector(stepper.y);
-			RealMatrix initialErrorCovariance = MatrixUtils.createRealMatrix(new double[][]{{10.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 10.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 10.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 1000.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 1000.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 1000.0}});
+			RealMatrix initialErrorCovariance = MatrixUtils.createRealMatrix(new double[][]{{100.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 100.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 100.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 1000.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 1000.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 1000.0}});
 
 			KFitter kFitter = new KFitter(initialStateEstimate, initialErrorCovariance, stepper, propagator);
 
@@ -153,24 +161,28 @@ public class KalmanFilter {
 
 			for (int k = 0; k < 1; k++) {
 
-				// System.out.println("--------- ForWard propagation !! ---------");
+			    //System.out.println("--------- ForWard propagation !! ---------");
 
 				for (Indicator indicator : forwardIndicators) {
 					kFitter.predict(indicator);
+					//System.out.println("indicator R " + indicator.R + " h "  + indicator.h + "; y =  " + kFitter.getStateEstimationVector() + " p = " + kFitter.getMomentum());
 					if (indicator.haveAHit()) {
+					    //System.out.println("Superlayer = " + indicator.hit.getSuperLayer() + ", Layer " + indicator.hit.getLayer() + ", Wire " + indicator.hit.getWire() + ", Nwires " + indicator.hit.getNumWires() + ", Radius " + indicator.hit.getR() + ", DOCA " + indicator.hit.getDoca());
 						kFitter.correct(indicator);
+						//System.out.println("y = " + kFitter.getStateEstimationVector() + " p = " + kFitter.getMomentum());
 					}
-					// System.out.println("y = " + kFitter.getStateEstimationVector() + " p = " + kFitter.getMomentum());
 				}
 
-				// System.out.println("--------- BackWard propagation !! ---------");
+				//System.out.println("--------- BackWard propagation !! ---------");
 
 				for (Indicator indicator : backwardIndicators) {
 					kFitter.predict(indicator);
+					//System.out.println("indicator R " + indicator.R + " h "  + indicator.h + "; y =  " + kFitter.getStateEstimationVector() + " p = " + kFitter.getMomentum());
 					if (indicator.haveAHit()) {
+					    //System.out.println("Superlayer = " + indicator.hit.getSuperLayer() + ", Layer " + indicator.hit.getLayer() + ", Wire " + indicator.hit.getWire() + ", Nwires " + indicator.hit.getNumWires() + ", Radius " + indicator.hit.getR() + ", DOCA " + indicator.hit.getDoca());
 						kFitter.correct(indicator);
+						//System.out.println("y = " + kFitter.getStateEstimationVector() + " p = " + kFitter.getMomentum());
 					}
-					// System.out.println("y = " + kFitter.getStateEstimationVector() + " p = " + kFitter.getMomentum());
 				}
 			}
 
@@ -187,7 +199,7 @@ public class KalmanFilter {
 			RealVector x_out = kFitter.getStateEstimationVector();
 			tracks.get(0).setPositionAndMomentumForKF(x_out);
 
-
+			//System.out.println("y_final = " + x_out + " p_final = " + kFitter.getMomentum());
 		} catch (Exception e) {
 			// e.printStackTrace();
 		}
@@ -200,18 +212,18 @@ public class KalmanFilter {
 
 		String name_De      = "deuteriumGas";
 		double thickness_De = 1;
-		double density_De   = 0.0009; // 9.37E-4;
+		double density_De   = 9.37E-4;// 5.5 atm
 		double ZoverA_De    = 0.496499;
-		double X0_De        = 0;
+		double X0_De        = 1.3445E+5; // I guess X0 is not even used???
 		double IeV_De       = 19.2;
 
 		org.jlab.clas.tracking.kalmanfilter.Material deuteriumGas = new org.jlab.clas.tracking.kalmanfilter.Material(name_De, thickness_De, density_De, ZoverA_De, X0_De, IeV_De, units);
 
-		String name_Bo      = "BONuS12Gas";
+		String name_Bo      = "BONuS12Gas";//80% He, 20% CO2
 		double thickness_Bo = 1;
 		double density_Bo   = 4.9778E-4;
 		double ZoverA_Bo    = 0.49989;
-		double X0_Bo        = 0;
+		double X0_Bo        = 4.5761E+4;
 		double IeV_Bo       = 73.8871;
 
 		org.jlab.clas.tracking.kalmanfilter.Material BONuS12 = new org.jlab.clas.tracking.kalmanfilter.Material(name_Bo, thickness_Bo, density_Bo, ZoverA_Bo, X0_Bo, IeV_Bo, units);
@@ -219,8 +231,8 @@ public class KalmanFilter {
 		String name_My      = "Mylar";
 		double thickness_My = 1;
 		double density_My   = 1.4;
-		double ZoverA_My    = 0.501363;
-		double X0_My        = 0;
+		double ZoverA_My    = 0.52037;
+		double X0_My        = 28.54;
 		double IeV_My       = 78.7;
 
 		org.jlab.clas.tracking.kalmanfilter.Material Mylar = new org.jlab.clas.tracking.kalmanfilter.Material(name_My, thickness_My, density_My, ZoverA_My, X0_My, IeV_My, units);
@@ -228,8 +240,8 @@ public class KalmanFilter {
 		String name_Ka      = "Kapton";
 		double thickness_Ka = 1;
 		double density_Ka   = 1.42;
-		double ZoverA_Ka    = 0.500722;
-		double X0_Ka        = 0;
+		double ZoverA_Ka    = 0.51264;
+		double X0_Ka        = 28.57;
 		double IeV_Ka       = 79.6;
 
 		org.jlab.clas.tracking.kalmanfilter.Material Kapton = new org.jlab.clas.tracking.kalmanfilter.Material(name_Ka, thickness_Ka, density_Ka, ZoverA_Ka, X0_Ka, IeV_Ka, units);
@@ -247,7 +259,7 @@ public class KalmanFilter {
 	ArrayList<Indicator> forwardIndicators(ArrayList<Hit> hitArrayList, HashMap<String, org.jlab.clas.tracking.kalmanfilter.Material> materialHashMap) {
 		ArrayList<Indicator> forwardIndicators = new ArrayList<>();
 		forwardIndicators.add(new Indicator(3.0, 0.2, null, true, materialHashMap.get("deuteriumGas")));
-		forwardIndicators.add(new Indicator(3.063, 0.001, null, true, materialHashMap.get("Kapton")));
+		forwardIndicators.add(new Indicator(3.060, 0.001, null, true, materialHashMap.get("Kapton")));
 		for (Hit hit : hitArrayList) {
 			forwardIndicators.add(new Indicator(hit.r(), 0.1, hit, true, materialHashMap.get("BONuS12Gas")));
 		}
@@ -259,7 +271,7 @@ public class KalmanFilter {
 		for (int i = hitArrayList.size() - 2; i >= 0; i--) {
 			backwardIndicators.add(new Indicator(hitArrayList.get(i).r(), 0.1, hitArrayList.get(i), false, materialHashMap.get("BONuS12Gas")));
 		}
-		backwardIndicators.add(new Indicator(3.063, 1, null, false, materialHashMap.get("BONuS12Gas")));
+		backwardIndicators.add(new Indicator(3.060, 1, null, false, materialHashMap.get("BONuS12Gas")));
 		backwardIndicators.add(new Indicator(3.0, 0.001, null, false, materialHashMap.get("Kapton")));
 		Hit hit = new Hit_beam(0, 0, 0, 0, 0, 0, 0, 0);
 		backwardIndicators.add(new Indicator(0.0, 0.2, hit, false, materialHashMap.get("deuteriumGas")));

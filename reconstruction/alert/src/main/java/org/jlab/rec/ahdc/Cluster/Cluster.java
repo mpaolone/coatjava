@@ -12,7 +12,7 @@ public class Cluster {
 
 	private double                _StereoAngle = 20.0;
 	private double                _DeltaZ = 300.0;
-	private double                _Zoffset = 178.0;
+	private double                _Zoffset = 150.0;
 
 	private double                _Radius;
 	private double                _Phi;

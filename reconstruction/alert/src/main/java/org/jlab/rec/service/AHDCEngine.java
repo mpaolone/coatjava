@@ -93,11 +93,13 @@ public class AHDCEngine extends ReconstructionEngine {
 			ArrayList<Track> AHDC_Tracks = new ArrayList<>();
 			if (findingMethod.equals("distance")) {
 				// IV) a) Distance method
+			    //System.out.println("using distance");
 				Distance distance = new Distance();
 				distance.find_track(AHDC_Clusters);
 				AHDC_Tracks = distance.get_AHDCTracks();
 			} else if (findingMethod.equals("hough")) {
 				// IV) b) Hough Transform method
+			    //System.out.println("using hough");
 				HoughTransform houghtransform = new HoughTransform();
 				houghtransform.find_tracks(AHDC_Clusters);
 				AHDC_Tracks = houghtransform.get_AHDCTracks();
