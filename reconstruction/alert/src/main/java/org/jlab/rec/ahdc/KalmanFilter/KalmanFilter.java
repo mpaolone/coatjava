@@ -37,12 +37,12 @@ public class KalmanFilter {
 		try {
 			//If simulation read MC::Particle Bank ------------------------------------------------
 			DataBank bankParticle = event.getBank("MC::Particle");
-			double   vxmc         = bankParticle.getFloat("vx", 0);
-			double   vymc         = bankParticle.getFloat("vy", 0);
-			double   vzmc         = bankParticle.getFloat("vz", 0);
-			double   pxmc         = bankParticle.getFloat("px", 0);
-			double   pymc         = bankParticle.getFloat("py", 0);
-			double   pzmc         = bankParticle.getFloat("pz", 0);
+			double   vxmc         = bankParticle.getFloat("vx", 0)*10;//mm
+			double   vymc         = bankParticle.getFloat("vy", 0)*10;//mm
+			double   vzmc         = bankParticle.getFloat("vz", 0)*10;//mm
+			double   pxmc         = bankParticle.getFloat("px", 0)*1000;//MeV
+			double   pymc         = bankParticle.getFloat("py", 0)*1000;//MeV
+			double   pzmc         = bankParticle.getFloat("pz", 0)*1000;//MeV
 			double p_mc = java.lang.Math.sqrt(pxmc*pxmc+pymc*pymc+pzmc*pzmc);
 			//System.out.println("MC track: vz: " + vzmc*10 + " px: " + pxmc*1000 + " py: " + pymc*1000 + " pz: " + pzmc*1000 + "; p = " + p_mc*1000);//convert p to MeV, v to mm
 			
@@ -89,8 +89,9 @@ public class KalmanFilter {
 			final double pz0 = tracks.get(0).get_pz();
 			final double p_init = java.lang.Math.sqrt(px0*px0+py0*py0+pz0*pz0);
 			double[]     y   = new double[]{x0, y0, z0, px0, py0, pz0};
-			//double[]     y   = new double[]{vxmc, vymc, vzmc, pxmc, pymc, pzmc};
 			//System.out.println("y = " + x0 + ", " + y0 + ", " + z0 + ", " + px0 + ", " + py0 + ", " + pz0 + "; p = " +  p_init);
+			//double[]     y   = new double[]{vxmc, vymc, vzmc, pxmc, pymc, pzmc};
+			//System.out.println("y = " + vxmc + ", " + vymc + ", " + vzmc + ", " + pxmc + ", " + pymc + ", " + pzmc + "; p = " +  java.lang.Math.sqrt(pxmc*pxmc+pymc*pymc+pzmc*pzmc));
 
 			// Initialization hit
 			// System.out.println("tracks = " + tracks);
@@ -119,7 +120,7 @@ public class KalmanFilter {
 			hitsWiresWriter.close();
 			 */
 
-			// System.out.println("KF_hits = " + KF_hits);
+			//System.out.println("KF_hits = " + KF_hits);
 
 			final ArrayList<Indicator> forwardIndicators  = forwardIndicators(KF_hits, materialHashMap);
 			final ArrayList<Indicator> backwardIndicators = backwardIndicators(KF_hits, materialHashMap);

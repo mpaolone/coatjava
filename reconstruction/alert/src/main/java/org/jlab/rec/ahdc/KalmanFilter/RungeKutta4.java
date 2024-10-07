@@ -51,7 +51,8 @@ public class RungeKutta4 {
 		else stepper.sTot -= h;
 
 		System.arraycopy(yIn, 0, yInTemp, 0, numberOfVariables);
-
+		// compare below with:
+		// common-tools/clas-tracking/src/main/java/org/jlab/clas/tracking/utilities/RungeKuttaDoca.java => reconciled?
 		double[] dydt = f(yInTemp);
 		for (int i = 0; i < numberOfVariables; ++i) {
 			k1[i] = h * dydt[i];
@@ -89,8 +90,9 @@ public class RungeKutta4 {
 							+ 1.0 / 3.0 * k3[i]
 							+ 1.0 / 6.0 * k4[i];
 		}
-
+		//System.out.print("before: px "+yInTemp[3]+" py "+yInTemp[4]+" pz "+yInTemp[5]+"; h = "+h+"; after : "+yIn[3]+" py "+yIn[4]+" pz "+yIn[5]);
 		energyLoss(yIn, h, material_);
+		//System.out.println("; after Eloss: "+yIn[3]+" py "+yIn[4]+" pz "+yIn[5]);
 	}
 
 	private double[] f(double[] y) {
