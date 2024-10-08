@@ -14,6 +14,7 @@ public class KFitter {
 	public final  Stepper    stepper;
 	private final Propagator propagator;
 	public        double     chi2             = 0;
+        // masses/energies in MeV
 	private final double     electron_mass_c2 = PhysicsConstants.massElectron() * 1000;
 	private final double     proton_mass_c2   = PhysicsConstants.massProton() * 1000;
 

@@ -27,6 +27,7 @@ import java.util.HashMap;
  *        - flag for target material
  *        - error px0 use MC !! Bad !! FIX IT FAST
  */
+// masses/energies should be in MeV; distances should be in mm
 
 public class KalmanFilter {
 
@@ -259,6 +260,7 @@ public class KalmanFilter {
 
 	ArrayList<Indicator> forwardIndicators(ArrayList<Hit> hitArrayList, HashMap<String, org.jlab.clas.tracking.kalmanfilter.Material> materialHashMap) {
 		ArrayList<Indicator> forwardIndicators = new ArrayList<>();
+		//R, h, defined in mm!
 		forwardIndicators.add(new Indicator(3.0, 0.2, null, true, materialHashMap.get("deuteriumGas")));
 		forwardIndicators.add(new Indicator(3.060, 0.001, null, true, materialHashMap.get("Kapton")));
 		for (Hit hit : hitArrayList) {
@@ -269,6 +271,7 @@ public class KalmanFilter {
 
 	ArrayList<Indicator> backwardIndicators(ArrayList<Hit> hitArrayList, HashMap<String, org.jlab.clas.tracking.kalmanfilter.Material> materialHashMap) {
 		ArrayList<Indicator> backwardIndicators = new ArrayList<>();
+		//R, h, defined in mm!
 		for (int i = hitArrayList.size() - 2; i >= 0; i--) {
 			backwardIndicators.add(new Indicator(hitArrayList.get(i).r(), 0.1, hitArrayList.get(i), false, materialHashMap.get("BONuS12Gas")));
 		}

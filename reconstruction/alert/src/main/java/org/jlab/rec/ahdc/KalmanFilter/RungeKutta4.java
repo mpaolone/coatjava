@@ -121,19 +121,21 @@ public class RungeKutta4 {
 		}
 	}
 
+    // This uses MeV and cm
 	private void energyLoss(
 			double[] yIn, double h, org.jlab.clas.tracking.kalmanfilter.Material material) {
-		double mass = particle.mass() * 1000;
+	    double mass = particle.mass() * 1000; //particle mass defined in GeV, converted to MeV
 
-		h /= 10; // cm
+		h /= 10; // h defined in mm, converted to cm
 		double mom = Math.sqrt(yIn[3] * yIn[3] + yIn[4] * yIn[4] + yIn[5] * yIn[5]);
 		double E = Math.sqrt(mom * mom + mass * mass);
-
-		double dedx = material.getEloss(mom/1000, mass/1000) * 1000;
+		//material::getEloss(double p, double m)  uses GeV and cm
+		//see common-tools/clas-tracking/src/main/java/org/jlab/clas/tracking/kalmanfilter/Material.java
+		double dedx = material.getEloss(mom/1000, mass/1000) * 1000;//Momentum, mass input in GeV, output in GeV/cm, converted to MeV/cm
 		double DeltaE = dedx * h;
 
 		stepper.dEdx += DeltaE;
-
+		
 		double mom_prim;
 		if (this.stepper.direction) mom_prim = Math.sqrt((E - DeltaE) * (E - DeltaE) - mass * mass);
 		else mom_prim = Math.sqrt((E + DeltaE) * (E + DeltaE) - mass * mass);
