@@ -91,6 +91,7 @@ public class KalmanFilter {
 			final double p_init = java.lang.Math.sqrt(px0*px0+py0*py0+pz0*pz0);
 			double[]     y   = new double[]{x0, y0, z0, px0, py0, pz0};
 			//System.out.println("y = " + x0 + ", " + y0 + ", " + z0 + ", " + px0 + ", " + py0 + ", " + pz0 + "; p = " +  p_init);
+			// EPAF: *the line below is for TEST ONLY!!!* 
 			//double[]     y   = new double[]{vxmc, vymc, vzmc, pxmc, pymc, pzmc};
 			//System.out.println("y = " + vxmc + ", " + vymc + ", " + vzmc + ", " + pxmc + ", " + pymc + ", " + pzmc + "; p = " +  java.lang.Math.sqrt(pxmc*pxmc+pymc*pymc+pzmc*pzmc));
 
@@ -170,7 +171,7 @@ public class KalmanFilter {
 					//System.out.println("indicator R " + indicator.R + " h "  + indicator.h + "; y =  " + kFitter.getStateEstimationVector() + " p = " + kFitter.getMomentum());
 					if (indicator.haveAHit()) {
 					    //System.out.println("Superlayer = " + indicator.hit.getSuperLayer() + ", Layer " + indicator.hit.getLayer() + ", Wire " + indicator.hit.getWire() + ", Nwires " + indicator.hit.getNumWires() + ", Radius " + indicator.hit.getR() + ", DOCA " + indicator.hit.getDoca());
-						kFitter.correct(indicator);
+					    kFitter.correct(indicator);
 						//System.out.println("y = " + kFitter.getStateEstimationVector() + " p = " + kFitter.getMomentum());
 					}
 				}
@@ -182,7 +183,7 @@ public class KalmanFilter {
 					//System.out.println("indicator R " + indicator.R + " h "  + indicator.h + "; y =  " + kFitter.getStateEstimationVector() + " p = " + kFitter.getMomentum());
 					if (indicator.haveAHit()) {
 					    //System.out.println("Superlayer = " + indicator.hit.getSuperLayer() + ", Layer " + indicator.hit.getLayer() + ", Wire " + indicator.hit.getWire() + ", Nwires " + indicator.hit.getNumWires() + ", Radius " + indicator.hit.getR() + ", DOCA " + indicator.hit.getDoca());
-						kFitter.correct(indicator);
+					    kFitter.correct(indicator);
 						//System.out.println("y = " + kFitter.getStateEstimationVector() + " p = " + kFitter.getMomentum());
 					}
 				}

@@ -57,8 +57,8 @@ public class Hit implements Comparable<Hit> {
 
 		R_layer = R_layer + DR_layer * (this.layerId-1);
 		double alphaW_layer = Math.toRadians(round / (numWires));
-		double wx           = -R_layer * Math.sin(alphaW_layer * this.wireId);
-		double wy           = -R_layer * Math.cos(alphaW_layer * this.wireId);
+		double wx           = -R_layer * Math.sin(alphaW_layer * this.wireId-1);
+		double wy           = -R_layer * Math.cos(alphaW_layer * this.wireId-1);
 
 		this.nbOfWires = (int) numWires;
 		this.phi       = Math.atan2(wy, wx);

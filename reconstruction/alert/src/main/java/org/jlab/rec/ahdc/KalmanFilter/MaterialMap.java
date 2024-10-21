@@ -21,10 +21,10 @@ public class MaterialMap {
 
 		String name_Bo      = "BONuS12Gas";//80% He, 20% CO2
 		double thickness_Bo = 1;
-		double density_Bo   = 4.9778E-4;
-		double ZoverA_Bo    = 0.49989;
-		double X0_Bo        = 4.5761E+4;
-		double IeV_Bo       = 73.8871;
+		double density_Bo   = 1.39735E-3;
+		double ZoverA_Bo    = 0.49983;
+		double X0_Bo        = 3.69401E+4;
+		double IeV_Bo       = 73.5338;
 
 		org.jlab.clas.tracking.kalmanfilter.Material BONuS12 = new org.jlab.clas.tracking.kalmanfilter.Material(name_Bo, thickness_Bo, density_Bo, ZoverA_Bo, X0_Bo, IeV_Bo, units);
 
