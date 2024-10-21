@@ -78,11 +78,11 @@ public class Hit implements Comparable<Hit> {
 
 		R_layer = R_layer + DR_layer * (this.layer-1);//OK
 		double alphaW_layer = Math.toRadians(round / (numWires));//OK
-		double wx           = -R_layer * Math.sin(alphaW_layer * (this.wire-1));//OK
-		double wy           = -R_layer * Math.cos(alphaW_layer * (this.wire-1));//OK
+		double wx           = -R_layer * Math.sin(alphaW_layer * (this.wire));//OK
+		double wy           = -R_layer * Math.cos(alphaW_layer * (this.wire));//OK
 
-		double wx_end = -R_layer * Math.sin(alphaW_layer * (this.wire-1) + thster * (Math.pow(-1, this.superLayer-1)));//OK
-		double wy_end = -R_layer * Math.cos(alphaW_layer * (this.wire-1) + thster * (Math.pow(-1, this.superLayer-1)));//OK
+		double wx_end = -R_layer * Math.sin(alphaW_layer * (this.wire) + thster * (Math.pow(-1, this.superLayer-1)));//OK
+		double wy_end = -R_layer * Math.cos(alphaW_layer * (this.wire) + thster * (Math.pow(-1, this.superLayer-1)));//OK
 
 		Line3D line = new Line3D(wx, wy, 0, wx_end, wy_end, zl);//apparent inconsistency: -150, zl/2, instead of 0, zl?
 		//Temporary note: if I understand the following well, it *does* lead to a position inconsistency between this code and the factory code 
@@ -105,7 +105,7 @@ public class Hit implements Comparable<Hit> {
 	}
 
 	public RealMatrix get_MeasurementNoise() {
-		return new Array2DRowRealMatrix(new double[][]{{10}});
+	    return new Array2DRowRealMatrix(new double[][]{{10.0}});//in cm... 10 cm is probably too much.
 	}
 
 	public double doca() {

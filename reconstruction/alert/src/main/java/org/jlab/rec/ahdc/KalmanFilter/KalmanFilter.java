@@ -136,6 +136,7 @@ public class KalmanFilter {
 
 			// Initialization of the Kalman Fitter
 			RealVector initialStateEstimate   = new ArrayRealVector(stepper.y);
+			//first 3 lines in cm^2; last 3 lines in MeV^2
 			RealMatrix initialErrorCovariance = MatrixUtils.createRealMatrix(new double[][]{{100.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 100.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 100.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 1000.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 1000.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 1000.0}});
 
 			KFitter kFitter = new KFitter(initialStateEstimate, initialErrorCovariance, stepper, propagator);
