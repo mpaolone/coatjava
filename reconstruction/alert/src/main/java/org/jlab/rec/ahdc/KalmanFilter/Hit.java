@@ -85,18 +85,17 @@ public class Hit implements Comparable<Hit> {
 		double wx_end = -R_layer * Math.sin(alphaW_layer * (this.wire-1) + thster * (Math.pow(-1, this.superLayer-1)));//OK
 		double wy_end = -R_layer * Math.cos(alphaW_layer * (this.wire-1) + thster * (Math.pow(-1, this.superLayer-1)));//OK
 
-		System.out.println(" superlayer " + this.superLayer + " layer " + this.layer + " wire " + this.wire + " wx " + wx + " wy " + wy + " wx_end " + wx_end + " wy_end " + wy_end);
+		//System.out.println(" superlayer " + this.superLayer + " layer " + this.layer + " wire " + this.wire + " wx " + wx + " wy " + wy + " wx_end " + wx_end + " wy_end " + wy_end);
 		
-		Line3D line = new Line3D(wx, wy, -zl/2, wx_end, wy_end, zl/2);//apparent inconsistency: -150, zl/2, instead of 0, zl?
-		//Temporary note: if I understand the following well, it *does* lead to a position inconsistency between this code and the factory code 
+		Line3D line = new Line3D(wx, wy, -zl/2, wx_end, wy_end, zl/2);
 		Point3D lPoint = new Point3D();
 		Point3D rPoint = new Point3D();
 		lPlane.intersection(line, lPoint);
 		rPlane.intersection(line, rPoint);
 		//lPoint.setZ(-zl/2);
 		//rPoint.setZ(zl/2);
-		lPoint.show();
-		rPoint.show();
+		//lPoint.show();
+		//rPoint.show();
 		// All wire go from left to right
 		Line3D wireLine = new Line3D(lPoint, rPoint);
 		//wireLine.show();
@@ -120,6 +119,10 @@ public class Hit implements Comparable<Hit> {
 	public Line3D line() {return line3D;}
 
 	public double distance(Point3D point3D) {
+	    //System.out.println("Calculating distance: ");
+	    //this.line3D.show();
+	    //point3D.show();
+	    //System.out.println(" d = " + this.line3D.distance(point3D).length());
 		return this.line3D.distance(point3D).length();
 	}
 

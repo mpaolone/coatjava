@@ -62,7 +62,7 @@ public class Hit implements Comparable<Hit> {
 		double wx           = -R_layer * Math.sin(alphaW_layer * (this.wireId-1) + 0.5*thster * (Math.pow(-1, this.superLayerId-1)));
 		double wy           = -R_layer * Math.cos(alphaW_layer * (this.wireId-1) + 0.5*thster * (Math.pow(-1, this.superLayerId-1)));
 
-		System.out.println(" superlayer " + this.superLayerId + " layer " + this.layerId + " wire " + this.wireId + " R_layer " + R_layer + " wx " + wx + " wy " + wy);
+		//System.out.println(" superlayer " + this.superLayerId + " layer " + this.layerId + " wire " + this.wireId + " R_layer " + R_layer + " wx " + wx + " wy " + wy);
 		
 		this.nbOfWires = (int) numWires;
 		this.phi       = Math.atan2(wy, wx);

@@ -72,7 +72,7 @@ public class KalmanFilter {
 
 
 			// Initialization ---------------------------------------------------------------------
-			final double      magfield          = -50;
+			final double      magfield          = +50;
 			final PDGParticle proton            = PDGDatabase.getParticleById(2212);
 			final int         numberOfVariables = 6;
 			final double      tesla             = 0.001;
@@ -89,10 +89,10 @@ public class KalmanFilter {
 			final double py0 = tracks.get(0).get_py();
 			final double pz0 = tracks.get(0).get_pz();
 			final double p_init = java.lang.Math.sqrt(px0*px0+py0*py0+pz0*pz0);
-			//double[]     y   = new double[]{x0, y0, z0, px0, py0, pz0};
+			double[]     y   = new double[]{x0, y0, z0, px0, py0, pz0};
 			//System.out.println("y = " + x0 + ", " + y0 + ", " + z0 + ", " + px0 + ", " + py0 + ", " + pz0 + "; p = " +  p_init);
 			// EPAF: *the line below is for TEST ONLY!!!* 
-			double[]     y   = new double[]{vxmc, vymc, vzmc, pxmc, pymc, pzmc};
+			//double[]     y   = new double[]{vxmc, vymc, vzmc, pxmc, pymc, pzmc};
 			//System.out.println("y = " + vxmc + ", " + vymc + ", " + vzmc + ", " + pxmc + ", " + pymc + ", " + pzmc + "; p = " +  java.lang.Math.sqrt(pxmc*pxmc+pymc*pymc+pzmc*pzmc));
 
 			// Initialization hit
