@@ -73,6 +73,8 @@ public class KFitter {
 	}
 
 	public void correct(Indicator indicator) {
+	    System.out.println(" state before: (" + stateEstimation.getEntry(0) + ", " + stateEstimation.getEntry(1) + ", " + stateEstimation.getEntry(2) + ", " + stateEstimation.getEntry(3) + ", " + stateEstimation.getEntry(4) + ", " + stateEstimation.getEntry(5) + ");" );
+	    System.out.println(" state radius before: " + Math.sqrt( Math.pow(stateEstimation.getEntry(0), 2) + Math.pow(stateEstimation.getEntry(1), 2) ) );
 		RealVector z;
 		RealMatrix measurementNoise;
 		RealMatrix measurementMatrix;
@@ -94,8 +96,12 @@ public class KFitter {
 			h = h(stateEstimation, indicator);
 			z = indicator.hit.get_Vector();
 
+			System.out.println(" distance " + h.getEntry(0) + " hit R " + indicator.hit.getR() + " hit wire " + indicator.hit.getWire() + " hit doca " +  indicator.hit.getDoca());
+		
 		}
 
+		/*
+		// EPAF: trying to not modify the trajectory for tests...
 		RealMatrix measurementMatrixT = measurementMatrix.transpose();
 
 		// S = H * P(k) * H' + R
@@ -116,7 +122,9 @@ public class KFitter {
 		// Numerically more stable !!
 		RealMatrix tmpMatrix = identity.subtract(kalmanGain.multiply(measurementMatrix));
 		errorCovariance = tmpMatrix.multiply(errorCovariance.multiply(tmpMatrix.transpose())).add(kalmanGain.multiply(measurementNoise.multiply(kalmanGain.transpose())));
-
+		*/
+		
+		//System.out.println(" state after: (" + stateEstimation.getEntry(0) + ", " + stateEstimation.getEntry(1) + ", " + stateEstimation.getEntry(2) + ", " + stateEstimation.getEntry(3) + ", " + stateEstimation.getEntry(4) + ", " + stateEstimation.getEntry(5) + ");" );
 		// Give back to the stepper the new stateEstimation
 		stepper.y = stateEstimation.toArray();
 	}

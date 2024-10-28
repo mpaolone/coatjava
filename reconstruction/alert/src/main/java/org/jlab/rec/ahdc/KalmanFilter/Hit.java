@@ -39,8 +39,8 @@ public class Hit implements Comparable<Hit> {
 		double numWires = 32.0;
 		double R_layer  = 47.0;
 
-		double zoff1 = 0.0d;//OK
-		double zoff2 = 300.0d;//OK
+		double zoff1 = -zl/2;//OK
+		double zoff2 = +zl/2;//OK
 		Point3D  p1 = new Point3D(R_layer, 0, zoff1);
 		Vector3D n1 = new Vector3D(0, 0, 1);
 		//n1.rotateY(-thopen);
@@ -76,24 +76,27 @@ public class Hit implements Comparable<Hit> {
 				break;
 		}
 
+		
 		R_layer = R_layer + DR_layer * (this.layer-1);//OK
 		double alphaW_layer = Math.toRadians(round / (numWires));//OK
-		double wx           = -R_layer * Math.sin(alphaW_layer * (this.wire));//OK
-		double wy           = -R_layer * Math.cos(alphaW_layer * (this.wire));//OK
+		double wx           = -R_layer * Math.sin(alphaW_layer * (this.wire-1));//OK
+		double wy           = -R_layer * Math.cos(alphaW_layer * (this.wire-1));//OK
 
-		double wx_end = -R_layer * Math.sin(alphaW_layer * (this.wire) + thster * (Math.pow(-1, this.superLayer-1)));//OK
-		double wy_end = -R_layer * Math.cos(alphaW_layer * (this.wire) + thster * (Math.pow(-1, this.superLayer-1)));//OK
+		double wx_end = -R_layer * Math.sin(alphaW_layer * (this.wire-1) + thster * (Math.pow(-1, this.superLayer-1)));//OK
+		double wy_end = -R_layer * Math.cos(alphaW_layer * (this.wire-1) + thster * (Math.pow(-1, this.superLayer-1)));//OK
 
-		Line3D line = new Line3D(wx, wy, 0, wx_end, wy_end, zl);//apparent inconsistency: -150, zl/2, instead of 0, zl?
+		System.out.println(" superlayer " + this.superLayer + " layer " + this.layer + " wire " + this.wire + " wx " + wx + " wy " + wy + " wx_end " + wx_end + " wy_end " + wy_end);
+		
+		Line3D line = new Line3D(wx, wy, -zl/2, wx_end, wy_end, zl/2);//apparent inconsistency: -150, zl/2, instead of 0, zl?
 		//Temporary note: if I understand the following well, it *does* lead to a position inconsistency between this code and the factory code 
 		Point3D lPoint = new Point3D();
 		Point3D rPoint = new Point3D();
 		lPlane.intersection(line, lPoint);
 		rPlane.intersection(line, rPoint);
-		lPoint.setZ(-zl/2);
-		rPoint.setZ(zl/2);
-		//lPoint.show();
-		//rPoint.show();
+		//lPoint.setZ(-zl/2);
+		//rPoint.setZ(zl/2);
+		lPoint.show();
+		rPoint.show();
 		// All wire go from left to right
 		Line3D wireLine = new Line3D(lPoint, rPoint);
 		//wireLine.show();
