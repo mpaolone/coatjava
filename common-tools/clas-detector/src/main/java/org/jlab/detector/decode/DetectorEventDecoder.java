@@ -85,7 +85,8 @@ public class DetectorEventDecoder {
         // Detector translation table
         keysTrans = Arrays.asList(new String[]{"FTCAL","FTHODO","FTTRK","LTCC","ECAL","FTOF",
                                                "HTCC","DC","CTOF","CND","BST","RF","BMT","FMT",
-                                               "RICH","HEL","BAND","RTPC","RASTER","ATOF","AHDC"
+                                               "RICH","HEL","BAND","RTPC",
+                                               "RASTER","ATOF","AHDC"
         });
         tablesTrans = Arrays.asList(new String[]{
             "/daq/tt/ftcal","/daq/tt/fthodo","/daq/tt/fttrk","/daq/tt/ltcc",
