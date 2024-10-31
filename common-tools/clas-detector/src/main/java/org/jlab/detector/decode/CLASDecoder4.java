@@ -420,15 +420,20 @@ public class CLASDecoder4 {
 
         Event event = new Event();
 
-        String[] adcBankNames = new String[]{"FTOF::adc","ECAL::adc","FTCAL::adc","FTHODO::adc","FTTRK::adc",
-                                                    "HTCC::adc","BST::adc","CTOF::adc","CND::adc","LTCC::adc","BMT::adc",
-                                                    "FMT::adc","HEL::adc","RF::adc","BAND::adc","RASTER::adc"};
-        DetectorType[] adcBankTypes = new DetectorType[]{DetectorType.FTOF,DetectorType.ECAL,DetectorType.FTCAL,
-                                                         DetectorType.FTHODO,DetectorType.FTTRK,
-                                                         DetectorType.HTCC,DetectorType.BST,DetectorType.CTOF,
-                                                         DetectorType.CND,DetectorType.LTCC,DetectorType.BMT,
-                                                         DetectorType.FMT,DetectorType.HEL,DetectorType.RF,
-                                                         DetectorType.BAND, DetectorType.RASTER};
+        String[]        adcBankNames = new String[]{"FTOF::adc","ECAL::adc","FTCAL::adc",
+                                                    "FTHODO::adc", "FTTRK::adc",
+                                                    "HTCC::adc","BST::adc","CTOF::adc",
+                                                    "CND::adc","LTCC::adc","BMT::adc",
+                                                    "FMT::adc","HEL::adc","RF::adc",
+                                                    "BAND::adc","RASTER::adc", 
+                                                    "AHDC::adc"};
+        DetectorType[]  adcBankTypes = new DetectorType[]{DetectorType.FTOF,DetectorType.ECAL,DetectorType.FTCAL,
+                                                          DetectorType.FTHODO,DetectorType.FTTRK,
+                                                          DetectorType.HTCC,DetectorType.BST,DetectorType.CTOF,
+                                                          DetectorType.CND,DetectorType.LTCC,DetectorType.BMT,
+                                                          DetectorType.FMT,DetectorType.HEL,DetectorType.RF,
+                                                          DetectorType.BAND, DetectorType.RASTER, 
+                                                          DetectorType.AHDC};
 
         String[] tdcBankNames = new String[]{"FTOF::tdc","ECAL::tdc","DC::tdc",
                                              "HTCC::tdc","LTCC::tdc","CTOF::tdc",
