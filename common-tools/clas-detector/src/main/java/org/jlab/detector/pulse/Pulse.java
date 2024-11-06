@@ -15,6 +15,12 @@ public class Pulse {
     public long flags;
     public int id;
 
+    public float adcMax;
+    public float timeRiseCFA;
+    public float timeFallCFA;
+    public float timeOverThresholdCFA;
+    public float timeCFD;
+
     /**
      * Units are the same as the raw units of the samples.
      * @param integral pulse integral, pedestal-subtracted
@@ -28,6 +34,8 @@ public class Pulse {
         this.flags = flags;
         this.id = id;
     }
+
+    public Pulse(){}
 
     @Override
     public String toString() {
