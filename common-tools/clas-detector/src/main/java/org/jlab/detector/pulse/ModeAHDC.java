@@ -97,15 +97,15 @@ public class ModeAHDC extends HipoExtractor  {
 			}
 			integral += samplesCorr[bin];
 		}
-		/**
-		 * If adcMax == ADC_LIMIT, that means there is saturation
+		/*
+		 * If adcMax + adcOffset == ADC_LIMIT, that means there is saturation
 		 * In that case, binMax is the middle of the first plateau
 		 * This convention can be changed
 		 */
-		if ((short) adcMax == ADC_LIMIT) {
+		if ((short) adcMax + adcOffset == ADC_LIMIT) {
 			int binMax2 = binMax;
 			for (int bin = binMax; bin < binNumber; bin++){
-				if (samplesCorr[bin] == ADC_LIMIT) {
+				if (samplesCorr[bin] + adcOffset == ADC_LIMIT) {
 					binMax2 = bin;
 				}
 				else {
@@ -193,7 +193,7 @@ public class ModeAHDC extends HipoExtractor  {
 			float slopeFall = 0;
 			if (binFall - 1 >= 0)
 					slopeFall = samplesCorr[binFall] - samplesCorr[binFall-1];
-			float fittedBinFall = (slopeFall == 0) ? binFall : binFall + (threshold - samplesCorr[binFall-1])/slopeFall;
+			float fittedBinFall = (slopeFall == 0) ? binFall : binFall-1 + (threshold - samplesCorr[binFall-1])/slopeFall;
 			timeFallCFA = (fittedBinFall + binOffset)*samplingTime;
 
 			// timeOverThreshold
