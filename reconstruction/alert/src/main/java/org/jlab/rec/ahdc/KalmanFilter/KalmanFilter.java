@@ -85,8 +85,10 @@ public class KalmanFilter {
 			final double x0  = 0.0;
 			final double y0  = 0.0;
 			final double z0  = tracks.get(0).get_Z0();
-			final double px0 = tracks.get(0).get_px();
-			final double py0 = tracks.get(0).get_py();
+			//final
+			double px0 = tracks.get(0).get_px();
+			//final
+			double py0 = tracks.get(0).get_py();
 			final double pz0 = tracks.get(0).get_pz();
 			final double p_init = java.lang.Math.sqrt(px0*px0+py0*py0+pz0*pz0);
 			double[]     y   = new double[]{x0, y0, z0, px0, py0, pz0};
@@ -96,7 +98,7 @@ public class KalmanFilter {
 			//System.out.println("y = " + vxmc + ", " + vymc + ", " + vzmc + ", " + pxmc + ", " + pymc + ", " + pzmc + "; p = " +  java.lang.Math.sqrt(pxmc*pxmc+pymc*pymc+pzmc*pzmc));
 
 			// Initialization hit
-			// System.out.println("tracks = " + tracks);
+			//System.out.println("tracks = " + tracks);
 			ArrayList<org.jlab.rec.ahdc.Hit.Hit> AHDC_hits = tracks.get(0).getHits();
 			ArrayList<Hit>                       KF_hits   = new ArrayList<>();
 			for (org.jlab.rec.ahdc.Hit.Hit AHDC_hit : AHDC_hits) {
@@ -113,7 +115,8 @@ public class KalmanFilter {
 				// if (!aleardyHaveR)
 				KF_hits.add(hit);
 			}
-
+			
+			
 			/*
 			Writer hitsWiresWriter = new FileWriter("hits_wires.dat");
 			for (Hit h : KF_hits) {
@@ -137,8 +140,8 @@ public class KalmanFilter {
 			// Initialization of the Kalman Fitter
 			RealVector initialStateEstimate   = new ArrayRealVector(stepper.y);
 			//first 3 lines in cm^2; last 3 lines in MeV^2
-			RealMatrix initialErrorCovariance = MatrixUtils.createRealMatrix(new double[][]{{100.0, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 100.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 100.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 1000.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 1000.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 1000.0}});
-
+			RealMatrix initialErrorCovariance = MatrixUtils.createRealMatrix(new double[][]{{1.00, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 1.00, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 25.0, 0.0, 0.0, 25.0}, {0.0, 0.0, 0.0, 1.00, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 1.00, 0.0}, {0.0, 0.0, 25.0, 0.0, 0.0, 25.0}});
+						
 			KFitter kFitter = new KFitter(initialStateEstimate, initialErrorCovariance, stepper, propagator);
 
 			/*
@@ -163,7 +166,7 @@ public class KalmanFilter {
 			 */
 
 
-			for (int k = 0; k < 1; k++) {
+			for (int k = 0; k < 10; k++) {
 
 			    //System.out.println("--------- ForWard propagation !! ---------");
 

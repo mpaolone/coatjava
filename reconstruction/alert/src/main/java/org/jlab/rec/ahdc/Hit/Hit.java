@@ -61,7 +61,7 @@ public class Hit implements Comparable<Hit> {
 		//should it be at z = 0? in which case, we need to account for the positive or negative stereo angle...
 		double wx           = -R_layer * Math.sin(alphaW_layer * (this.wireId-1) + 0.5*thster * (Math.pow(-1, this.superLayerId-1)));
 		double wy           = -R_layer * Math.cos(alphaW_layer * (this.wireId-1) + 0.5*thster * (Math.pow(-1, this.superLayerId-1)));
-
+		
 		//System.out.println(" superlayer " + this.superLayerId + " layer " + this.layerId + " wire " + this.wireId + " R_layer " + R_layer + " wx " + wx + " wy " + wy);
 		
 		this.nbOfWires = (int) numWires;

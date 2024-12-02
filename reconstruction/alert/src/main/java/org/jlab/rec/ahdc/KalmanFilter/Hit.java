@@ -17,6 +17,7 @@ public class Hit implements Comparable<Hit> {
 	private final int    wire;
 	private final double r;
 	private final double doca;
+	private final double adc;
 	private final double numWires;
 	private final Line3D line3D;
 
@@ -30,7 +31,8 @@ public class Hit implements Comparable<Hit> {
 		this.r          = r;
 		this.doca       = doca;
 		this.numWires = numWire;
-
+		this.adc = 0;//placeholder
+		
 		final double DR_layer = 4.0;//OK
 		final double round    = 360.0;//OK
 		final double thster   = Math.toRadians(20.0);//OK
@@ -102,12 +104,28 @@ public class Hit implements Comparable<Hit> {
 		this.line3D = wireLine;
 	}
 
+        public RealVector get_Vector_simple() {
+		return new ArrayRealVector(new double[]{this.doca});
+	}
+
 	public RealVector get_Vector() {
 		return new ArrayRealVector(new double[]{this.doca});
 	}
 
-	public RealMatrix get_MeasurementNoise() {
-	    return new Array2DRowRealMatrix(new double[][]{{10.0}});//in cm... 10 cm is probably too much.
+	public RealMatrix get_MeasurementNoise_simple() {
+	    return new Array2DRowRealMatrix(new double[][]{{0.01}});
+	}
+
+        public RealMatrix get_MeasurementNoise() {
+	    final double costhster = Math.cos(thster);
+	    final double sinthster = Math.cos(thster);
+	    //dR = 0.1m dphi = pi dz = L/2 
+	    Array2DRowRealMatrix wire_noise = new Array2DRowRealMatrix(new double[][]{{0.1, 0.0, 0.0}, {0.0, Math.atan(0.1/this.r), 0.0}, {0.0, 0.0, 150.0}});//uncertainty matrix in wire coordinates
+	    Array2DRowRealMatrix stereo_rotation = new Array2DRowRealMatrix(new double[][]{{1, 0.0, 0.0}, {0, costhster, -sinthster}, {0, sinthster, costhster}});//rotation of wire
+	    wire_noise.multiply(stereo_rotation);
+	    
+	    return wire_noise.multiply(wire_noise);
+	    //		
 	}
 
 	public double doca() {
@@ -163,6 +181,10 @@ public class Hit implements Comparable<Hit> {
 
 	public double getDoca() {
 		return doca;
+	}
+
+	public double getADC() {
+		return adc;
 	}
 
 	public Line3D getLine3D() {

@@ -58,7 +58,7 @@ public class KFitter {
 		double dE = Math.abs(stepper.dEdx);
 
 		double K           = 0.000307075;
-		double sigma2_dE   = indicator.material.getDensity() * K * indicator.material.getZoverA() / beta2 * tmax * s / 10 * (1.0 - beta2 / 2) * 1000 * 1000;
+		double sigma2_dE   = indicator.material.getDensity() * K * indicator.material.getZoverA() / beta2 * tmax * s / 10 * (1.0 - beta2 / 2) * 1000 * 1000;//in MeV^2
 		double dp_prim_ddE = (E + dE) / Math.sqrt((E + dE) * (E + dE) - mass * mass);
 		double sigma2_px   = Math.pow(px / p, 2) * Math.pow(dp_prim_ddE, 2) * sigma2_dE;
 		double sigma2_py   = Math.pow(py / p, 2) * Math.pow(dp_prim_ddE, 2) * sigma2_dE;
@@ -83,29 +83,30 @@ public class KFitter {
 			measurementNoise =
 					new Array2DRowRealMatrix(
 							new double[][]{
-									{9.00, 0.0000, 0.0000},
-									{0.00, 1e10, 0.0000},
-									{0.00, 0.0000, 1e10}
-							});
-			measurementMatrix  = H_beam(stateEstimation);
-			h = h_beam(stateEstimation);
-			z = indicator.hit.get_Vector_beam();
+									// {9.00, 0.0000, 0.0000},
+									// {0.00, 1e10, 0.0000},
+									// {0.00, 0.0000, 1e10}
+									{0.09, 0.0000, 0.0000},
+									{0.00, 1.e10, 0.0000},
+									{0.00, 0.0000, 1.e10}
+							});//3x3
+			measurementMatrix  = H_beam(stateEstimation);//6x3
+			h = h_beam(stateEstimation);//3x1
+			z = indicator.hit.get_Vector_beam();//0!
 		} else {
-			measurementNoise = indicator.hit.get_MeasurementNoise();
-			measurementMatrix  = H(stateEstimation, indicator);
-			h = h(stateEstimation, indicator);
-			z = indicator.hit.get_Vector();
+		        measurementNoise = indicator.hit.get_MeasurementNoise_simple();//1x1
+		        measurementMatrix  = H_simple(stateEstimation, indicator);//6x1
+		        h = h(stateEstimation, indicator);//1x1
+			z = indicator.hit.get_Vector();//1x1
 
 			//System.out.println(" distance " + h.getEntry(0) + " hit R " + indicator.hit.getR() + " hit wire " + indicator.hit.getWire() + " hit doca " +  indicator.hit.getDoca());
 		
 		}
-
-		// EPAF: trying to not modify the trajectory for tests...
 		RealMatrix measurementMatrixT = measurementMatrix.transpose();
 
 		// S = H * P(k) * H' + R
 		RealMatrix S = measurementMatrix.multiply(errorCovariance).multiply(measurementMatrixT).add(measurementNoise);
-
+				
 		// Inn = z(k) - h(xHat(k)-)
 		RealVector innovation = z.subtract(h);
 
@@ -167,11 +168,58 @@ public class KFitter {
 	private RealVector h(RealVector x, Indicator indicator) {
 
 		double d = indicator.hit.distance(new Point3D(x.getEntry(0), x.getEntry(1), x.getEntry(2)));
-
-		return MatrixUtils.createRealVector(new double[]{d});
+		//As per my understanding: d -> r distance from wire; phi, z unknown 
+		return MatrixUtils.createRealVector(new double[]{d});//would need to have this 3x3
 	}
 
-	private RealMatrix H(RealVector x, Indicator indicator) {
+        private RealMatrix H(RealVector x, Indicator indicator) {
+
+		// As per my understanding: ddocadx,y,z -> = dr/dx,y,z, etc
+		// dphi/dx
+	    double xx = x.getEntry(0);//(indicator.hit.getline3D().origin().x()+indicator.hit.getline3D().end().x())*0.5;
+	    double yy = x.getEntry(1);//(indicator.hit.getline3D().origin().y()+indicator.hit.getline3D().end().y())*0.5;
+
+		double drdx = (xx) / (Math.hypot(xx, yy));
+		double drdy = (yy) / (Math.hypot(xx, yy));
+		double drdz = 0.0;
+		double drdpx = 0.0;
+		double drdpy = 0.0;
+		double drdpz = 0.0;
+
+		double dphidx = -(yy) / (xx * xx + yy * yy);
+		double dphidy = (xx) / (xx * xx + yy * yy);
+		double dphidz = 0.0;
+		double dphidpx = 0.0;
+		double dphidpy = 0.0;
+		double dphidpz = 0.0;
+
+		double dzdx = 0.0;
+		double dzdy = 0.0;
+		double dzdz = 1.0;
+		double dzdpx = 0.0;
+		double dzdpy = 0.0;
+		double dzdpz = 0.0;
+
+		return MatrixUtils.createRealMatrix(
+				new double[][]{
+						{drdx, drdy, drdz, drdpx, drdpy, drdpz},
+						{dphidx, dphidy, dphidz, dphidpx, dphidpy, dphidpz},
+						{dzdx, dzdy, dzdz, dzdpx, dzdpy, dzdpz}
+				});
+		// double ddocadx  = subfunctionH(x, indicator, 0);
+		// double ddocady  = subfunctionH(x, indicator, 1);
+		// double ddocadz  = subfunctionH(x, indicator, 2);
+		// double ddocadpx = subfunctionH(x, indicator, 3);
+		// double ddocadpy = subfunctionH(x, indicator, 4);
+		// double ddocadpz = subfunctionH(x, indicator, 5);
+		
+		// return MatrixUtils.createRealMatrix(new double[][]{
+		// 	{ddocadx, ddocady, ddocadz, ddocadpx, ddocadpy, ddocadpz},
+		// 	{0, 0, 0, 0, 0, 0, 0},
+		// 	{0, 0, 0, 0, 0, 0, 0}});
+	}
+
+	private RealMatrix H_simple(RealVector x, Indicator indicator) {
 
 		double ddocadx  = subfunctionH(x, indicator, 0);
 		double ddocady  = subfunctionH(x, indicator, 1);
@@ -179,10 +227,11 @@ public class KFitter {
 		double ddocadpx = subfunctionH(x, indicator, 3);
 		double ddocadpy = subfunctionH(x, indicator, 4);
 		double ddocadpz = subfunctionH(x, indicator, 5);
-
-
+		
+		// As per my understanding: ddocadx,y,z -> = dr/dx,y,z, etc
+		// dphi/dx
 		return MatrixUtils.createRealMatrix(new double[][]{
-				{ddocadx, ddocady, ddocadz, ddocadpx, ddocadpy, ddocadpz}});
+			{ddocadx, ddocady, ddocadz, ddocadpx, ddocadpy, ddocadpz}});
 	}
 
 	double subfunctionH(RealVector x, Indicator indicator, int i) {

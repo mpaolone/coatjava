@@ -91,37 +91,40 @@ public class AHDCEngine extends ReconstructionEngine {
 			
 			// IV) Track Finder
 			ArrayList<Track> AHDC_Tracks = new ArrayList<>();
-			if (findingMethod.equals("distance")) {
-				// IV) a) Distance method
-			    //System.out.println("using distance");
-				Distance distance = new Distance();
-				distance.find_track(AHDC_Clusters);
-				AHDC_Tracks = distance.get_AHDCTracks();
-			} else if (findingMethod.equals("hough")) {
-				// IV) b) Hough Transform method
-			    //System.out.println("using hough");
-				HoughTransform houghtransform = new HoughTransform();
-				houghtransform.find_tracks(AHDC_Clusters);
-				AHDC_Tracks = houghtransform.get_AHDCTracks();
-			}
+			// if (findingMethod.equals("distance")) {
+			// 	// IV) a) Distance method
+			//     //System.out.println("using distance");
+			// 	Distance distance = new Distance();
+			// 	distance.find_track(AHDC_Clusters);
+			// 	AHDC_Tracks = distance.get_AHDCTracks();
+			// } else if (findingMethod.equals("hough")) {
+			// 	// IV) b) Hough Transform method
+			//     //System.out.println("using hough");
+			// 	HoughTransform houghtransform = new HoughTransform();
+			// 	houghtransform.find_tracks(AHDC_Clusters);
+			// 	AHDC_Tracks = houghtransform.get_AHDCTracks();
+			// }
 
-			// V) Global fit
-			for (Track track : AHDC_Tracks) {
-				int nbOfPoints = track.get_Clusters().size();
+			//Temporary track method ONLY for MC with no background;
+			AHDC_Tracks.add(new Track(AHDC_Hits));
 
-				double[][] szPos = new double[nbOfPoints][3];
+			// // V) Global fit
+			// for (Track track : AHDC_Tracks) {
+			// 	int nbOfPoints = track.get_Clusters().size();
 
-				int j = 0;
-				for (Cluster cluster : track.get_Clusters()) {
-					szPos[j][0] = cluster.get_X();
-					szPos[j][1] = cluster.get_Y();
-					szPos[j][2] = cluster.get_Z();
-					j++;
-				}
+			// 	double[][] szPos = new double[nbOfPoints][3];
 
-				HelixFitJava h = new HelixFitJava();
-				track.setPositionAndMomentum(h.HelixFit(nbOfPoints, szPos, 1));
-			}
+			// 	int j = 0;
+			// 	for (Cluster cluster : track.get_Clusters()) {
+			// 		szPos[j][0] = cluster.get_X();
+			// 		szPos[j][1] = cluster.get_Y();
+			// 		szPos[j][2] = cluster.get_Z();
+			// 		j++;
+			// 	}
+
+			// 	HelixFitJava h = new HelixFitJava();
+			// 	track.setPositionAndMomentum(h.HelixFit(nbOfPoints, szPos, 1));
+			// }
 
 			// VI) Kalman Filter
 			// System.out.println("AHDC_Tracks = " + AHDC_Tracks);
