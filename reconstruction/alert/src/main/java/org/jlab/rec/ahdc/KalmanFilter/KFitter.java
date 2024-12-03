@@ -95,9 +95,14 @@ public class KFitter {
 			z = indicator.hit.get_Vector_beam();//0!
 		} else {
 		        measurementNoise = indicator.hit.get_MeasurementNoise_simple();//1x1
-		        measurementMatrix  = H_simple(stateEstimation, indicator);//6x1
-		        h = h(stateEstimation, indicator);//1x1
-			z = indicator.hit.get_Vector();//1x1
+		        measurementMatrix = H_simple(stateEstimation, indicator);//6x1
+		        h = h_simple(stateEstimation, indicator);//1x1
+			z = indicator.hit.get_Vector_simple();//1x1
+			
+		        // measurementNoise = indicator.hit.get_MeasurementNoise();//3x3
+		        // measurementMatrix  = H(stateEstimation, indicator);//6x3
+		        // h = h(stateEstimation, indicator);//3x1
+			// z = indicator.hit.get_Vector();//3x1
 
 			//System.out.println(" distance " + h.getEntry(0) + " hit R " + indicator.hit.getR() + " hit wire " + indicator.hit.getWire() + " hit doca " +  indicator.hit.getDoca());
 		
@@ -106,7 +111,7 @@ public class KFitter {
 
 		// S = H * P(k) * H' + R
 		RealMatrix S = measurementMatrix.multiply(errorCovariance).multiply(measurementMatrixT).add(measurementNoise);
-				
+		
 		// Inn = z(k) - h(xHat(k)-)
 		RealVector innovation = z.subtract(h);
 
@@ -166,6 +171,14 @@ public class KFitter {
 	}
 
 	private RealVector h(RealVector x, Indicator indicator) {
+	        //double d = indicator.hit.distance(new Point3D(x.getEntry(0), x.getEntry(1), x.getEntry(2)));
+		//As per my understanding: d -> r distance from wire; phi, z unknown 
+	        double xx = x.getEntry(0);//(indicator.hit.getline3D().origin().x()+indicator.hit.getline3D().end().x())*0.5;
+	        double yy = x.getEntry(1);//(indicator.hit.getline3D().origin().y()+indicator.hit.getline3D().end().y())*0.5;
+		return MatrixUtils.createRealVector(new double[]{Math.hypot(xx, yy), Math.atan2(yy, xx), x.getEntry(2)});
+	}
+
+        private RealVector h_simple(RealVector x, Indicator indicator) {
 
 		double d = indicator.hit.distance(new Point3D(x.getEntry(0), x.getEntry(1), x.getEntry(2)));
 		//As per my understanding: d -> r distance from wire; phi, z unknown 
@@ -176,8 +189,8 @@ public class KFitter {
 
 		// As per my understanding: ddocadx,y,z -> = dr/dx,y,z, etc
 		// dphi/dx
-	    double xx = x.getEntry(0);//(indicator.hit.getline3D().origin().x()+indicator.hit.getline3D().end().x())*0.5;
-	    double yy = x.getEntry(1);//(indicator.hit.getline3D().origin().y()+indicator.hit.getline3D().end().y())*0.5;
+	        double xx = x.getEntry(0);//(indicator.hit.getline3D().origin().x()+indicator.hit.getline3D().end().x())*0.5;
+	        double yy = x.getEntry(1);//(indicator.hit.getline3D().origin().y()+indicator.hit.getline3D().end().y())*0.5;
 
 		double drdx = (xx) / (Math.hypot(xx, yy));
 		double drdy = (yy) / (Math.hypot(xx, yy));
@@ -229,7 +242,6 @@ public class KFitter {
 		double ddocadpz = subfunctionH(x, indicator, 5);
 		
 		// As per my understanding: ddocadx,y,z -> = dr/dx,y,z, etc
-		// dphi/dx
 		return MatrixUtils.createRealMatrix(new double[][]{
 			{ddocadx, ddocady, ddocadz, ddocadpx, ddocadpy, ddocadpz}});
 	}

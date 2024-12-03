@@ -16,6 +16,7 @@ public class Hit implements Comparable<Hit> {
 	private final int    layer;
 	private final int    wire;
 	private final double r;
+	private final double phi;
 	private final double doca;
 	private final double adc;
 	private final double numWires;
@@ -88,7 +89,8 @@ public class Hit implements Comparable<Hit> {
 		double wy_end = -R_layer * Math.cos(alphaW_layer * (this.wire-1) + thster * (Math.pow(-1, this.superLayer-1)));//OK
 
 		//System.out.println(" superlayer " + this.superLayer + " layer " + this.layer + " wire " + this.wire + " wx " + wx + " wy " + wy + " wx_end " + wx_end + " wy_end " + wy_end);
-		
+		this.phi = Math.atan2( (wy+wy_end)*0.5, (wx+wx_end)*0.5 );
+		    
 		Line3D line = new Line3D(wx, wy, -zl/2, wx_end, wy_end, zl/2);
 		Point3D lPoint = new Point3D();
 		Point3D rPoint = new Point3D();
@@ -103,36 +105,40 @@ public class Hit implements Comparable<Hit> {
 		//wireLine.show();
 		this.line3D = wireLine;
 	}
+    
+	public RealVector get_Vector() {
+	    RealVector wire_meas = new ArrayRealVector(new double[]{this.r(), this.phi(), 0});
+								 //Array2DRowRealMatrix stereo_rotation = new Array2DRowRealMatrix(new double[][]{{1, 0.0, 0.0}, {0, costhster, -sinthster}, {0, sinthster, costhster}});//rotation of wire: needed?
+	    return wire_meas;//.multiply(stereo_rotation);
+	}
 
         public RealVector get_Vector_simple() {
 		return new ArrayRealVector(new double[]{this.doca});
-	}
-
-	public RealVector get_Vector() {
-		return new ArrayRealVector(new double[]{this.doca});
-	}
-
-	public RealMatrix get_MeasurementNoise_simple() {
-	    return new Array2DRowRealMatrix(new double[][]{{0.01}});
 	}
 
         public RealMatrix get_MeasurementNoise() {
 	    final double costhster = Math.cos(thster);
 	    final double sinthster = Math.cos(thster);
 	    //dR = 0.1m dphi = pi dz = L/2 
-	    Array2DRowRealMatrix wire_noise = new Array2DRowRealMatrix(new double[][]{{0.1, 0.0, 0.0}, {0.0, Math.atan(0.1/this.r), 0.0}, {0.0, 0.0, 150.0}});//uncertainty matrix in wire coordinates
+	    Array2DRowRealMatrix wire_noise = new Array2DRowRealMatrix(new double[][]{{0.1, 0.0, 0.0}, {0.0, Math.atan(0.1/this.r), 0.0}, {0.0, 0.0, 150.0/costhster}});//uncertainty matrix in wire coordinates
 	    Array2DRowRealMatrix stereo_rotation = new Array2DRowRealMatrix(new double[][]{{1, 0.0, 0.0}, {0, costhster, -sinthster}, {0, sinthster, costhster}});//rotation of wire
 	    wire_noise.multiply(stereo_rotation);
 	    
 	    return wire_noise.multiply(wire_noise);
-	    //		
+	    //
 	}
 
+    	public RealMatrix get_MeasurementNoise_simple() {
+	    return new Array2DRowRealMatrix(new double[][]{{0.01}});
+	}
+    
 	public double doca() {
 		return doca;
 	}
 
 	public double r()    {return r;}
+
+	public double phi()    {return phi;}
 
 	public Line3D line() {return line3D;}
 
