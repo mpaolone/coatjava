@@ -140,7 +140,7 @@ public class KalmanFilter {
 			// Initialization of the Kalman Fitter
 			RealVector initialStateEstimate   = new ArrayRealVector(stepper.y);
 			//first 3 lines in cm^2; last 3 lines in MeV^2
-			RealMatrix initialErrorCovariance = MatrixUtils.createRealMatrix(new double[][]{{1.00, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 1.00, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 25.0, 0.0, 0.0, 25.0}, {0.0, 0.0, 0.0, 1.00, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 1.00, 0.0}, {0.0, 0.0, 25.0, 0.0, 0.0, 25.0}});
+			RealMatrix initialErrorCovariance = MatrixUtils.createRealMatrix(new double[][]{{1.00, 0.0, 0.0, 0.0, 0.0, 0.0}, {0.0, 1.00, 0.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 25.0, 0.0, 0.0, 0.0}, {0.0, 0.0, 0.0, 1.00, 0.0, 0.0}, {0.0, 0.0, 0.0, 0.0, 1.00, 0.0}, {0.0, 0.0, 0.0, 0.0, 0.0, 25.0}});
 						
 			KFitter kFitter = new KFitter(initialStateEstimate, initialErrorCovariance, stepper, propagator);
 
@@ -165,7 +165,14 @@ public class KalmanFilter {
 			writer_back.close();
 			 */
 
-
+			//Print out hit residuals *before* fit:
+			// for (Indicator indicator : forwardIndicators) {
+			// 	kFitter.predict(indicator);
+			// 	if (indicator.haveAHit()) {
+			// 	    System.out.println(" Pre-fit: indicator R " + indicator.R + "; y =  " + kFitter.getStateEstimationVector() + " p = " + kFitter.getMomentum() + " residual: " + kFitter.residual(indicator) + " sign " + kFitter.wire_sign(indicator) );
+			// 	}
+			// }
+			
 			for (int k = 0; k < 10; k++) {
 
 			    //System.out.println("--------- ForWard propagation !! ---------");
@@ -193,6 +200,14 @@ public class KalmanFilter {
 				}
 			}
 
+			// //Print out residuals *after* fit:
+			// for (Indicator indicator : forwardIndicators) {
+			//     kFitter.predict(indicator);
+			//     if (indicator.haveAHit()) {
+			// 	System.out.println(" Post-fit: indicator R " + indicator.R + "; y =  " + kFitter.getStateEstimationVector() + " p = " + kFitter.getMomentum() + " residual: " + kFitter.residual(indicator) + " sign " + kFitter.wire_sign(indicator) );
+			//     }
+			// }
+			
 			/*
 			Writer writer_last = new FileWriter("track_last.dat");
 			for (Indicator indicator : forwardIndicators) {

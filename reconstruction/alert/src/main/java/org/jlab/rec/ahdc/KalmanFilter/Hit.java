@@ -12,6 +12,7 @@ import org.jlab.geom.prim.Vector3D;
 public class Hit implements Comparable<Hit> {
 
 	private final double thster = Math.toRadians(20.0);
+        private final double zl     = 300.0;//OK
 	private final int    superLayer;
 	private final int    layer;
 	private final int    wire;
@@ -37,7 +38,6 @@ public class Hit implements Comparable<Hit> {
 		final double DR_layer = 4.0;//OK
 		final double round    = 360.0;//OK
 		final double thster   = Math.toRadians(20.0);//OK
-		final double zl       = 300.0;//OK
 
 		double numWires = 32.0;
 		double R_layer  = 47.0;
@@ -88,9 +88,9 @@ public class Hit implements Comparable<Hit> {
 		double wx_end = -R_layer * Math.sin(alphaW_layer * (this.wire-1) + thster * (Math.pow(-1, this.superLayer-1)));//OK
 		double wy_end = -R_layer * Math.cos(alphaW_layer * (this.wire-1) + thster * (Math.pow(-1, this.superLayer-1)));//OK
 
-		//System.out.println(" superlayer " + this.superLayer + " layer " + this.layer + " wire " + this.wire + " wx " + wx + " wy " + wy + " wx_end " + wx_end + " wy_end " + wy_end);
 		this.phi = Math.atan2( (wy+wy_end)*0.5, (wx+wx_end)*0.5 );
-		    
+		//System.out.println(" superlayer " + this.superLayer + " layer " + this.layer + " wire " + this.wire + " wx " + wx + " wy " + wy + " wx_end " + wx_end + " wy_end " + wy_end + " phi " + this.phi);
+		
 		Line3D line = new Line3D(wx, wy, -zl/2, wx_end, wy_end, zl/2);
 		Point3D lPoint = new Point3D();
 		Point3D rPoint = new Point3D();
@@ -106,14 +106,24 @@ public class Hit implements Comparable<Hit> {
 		this.line3D = wireLine;
 	}
     
-	public RealVector get_Vector() {
+    //hit measurement vector in cylindrical coordinates: r, phi, z
+        public RealVector get_Vector() {
+	    // final double costhster = Math.cos(thster);
+	    // final double sinthster = Math.cos(thster);
 	    RealVector wire_meas = new ArrayRealVector(new double[]{this.r(), this.phi(), 0});
-								 //Array2DRowRealMatrix stereo_rotation = new Array2DRowRealMatrix(new double[][]{{1, 0.0, 0.0}, {0, costhster, -sinthster}, {0, sinthster, costhster}});//rotation of wire: needed?
+	    // Array2DRowRealMatrix stereo_rotation = new Array2DRowRealMatrix(new double[][]{{1, 0.0, 0.0}, {0, costhster, -sinthster}, {0, sinthster, costhster}});//rotation of wire: needed?
 	    return wire_meas;//.multiply(stereo_rotation);
 	}
 
+    //hit measurement vector in 1 dimension: minimize distance - doca
         public RealVector get_Vector_simple() {
 		return new ArrayRealVector(new double[]{this.doca});
+	}
+
+    //hit measurement vector in 1 dimension: minimize distance - doca - adds hit "sign"
+        public RealVector get_Vector_sign(int sign) {
+ 	    // Attempt: multiply doca by sign
+		return new ArrayRealVector(new double[]{sign*this.doca});
 	}
 
         public RealMatrix get_MeasurementNoise() {
@@ -138,7 +148,15 @@ public class Hit implements Comparable<Hit> {
 
 	public double r()    {return r;}
 
-	public double phi()    {return phi;}
+        public double phi()    {return phi;}//at z = 0;
+    
+        public double phi(double z)    {
+	    // double x_0 = r*sin(phi);
+	    // double y_0 = r*cos(phi);
+	    double x_z = r*Math.sin( phi + thster * z/(zl*0.5) * (Math.pow(-1, this.superLayer-1)) );
+	    double y_z = r*Math.cos( phi + thster * z/(zl*0.5) * (Math.pow(-1, this.superLayer-1)) );
+	    return Math.atan2(x_z, y_z);
+	}
 
 	public Line3D line() {return line3D;}
 
