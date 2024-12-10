@@ -443,6 +443,7 @@ public class CLASDecoder4 {
         Event event = new Event();
 
         String[]         wfBankNames = new String[]{"AHDC::wf"};
+        DetectorType[]   wfBankTypes = new DetectorType[]{DetectorType.AHDC};
         String[]        adcBankNames = new String[]{"FTOF::adc","ECAL::adc","FTCAL::adc",
                                                     "FTHODO::adc", "FTTRK::adc",
                                                     "HTCC::adc","BST::adc","CTOF::adc",
