@@ -14,7 +14,7 @@ import org.jlab.detector.decode.DetectorDataDgtz.HelicityDecoderData;
 import org.jlab.detector.helicity.HelicityBit;
 import org.jlab.detector.helicity.HelicitySequence;
 import org.jlab.detector.helicity.HelicityState;
-import org.jlab.detector.pulse.Mode3;
+import org.jlab.detector.pulse.ModeAHDC;
 
 import org.jlab.logging.DefaultLogger;
 
@@ -47,8 +47,8 @@ public class CLASDecoder4 {
     private HipoDataEvent               hipoEvent = null;
     private boolean              isRunNumberFixed = false;
     private int                  decoderDebugMode = 0;
-    private SchemaFactory        schemaFactory = new SchemaFactory();
-    private Mode3 mode3 = new Mode3();
+    private SchemaFactory        schemaFactory    = new SchemaFactory();
+    private ModeAHDC ahdcExtractor                = new ModeAHDC();
 
     public CLASDecoder4(boolean development){
         codaDecoder = new CodaEventDecoder();
@@ -248,7 +248,7 @@ public class CLASDecoder4 {
     }
 
     public void extractPulses(Event event) {
-        mode3.update(6, null, event, schemaFactory, "AHDC::wf", "AHDC::adc");
+        ahdcExtractor.update(6, null, event, schemaFactory, "AHDC::wf", "AHDC::adc");
     }
 
     public Bank getDataBankWF(String name, DetectorType type) {
