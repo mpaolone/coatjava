@@ -128,4 +128,6 @@ public class Hit implements Comparable<Hit> {
 	public double getY() {
 		return y;
 	}
+
+	public double getPhi() {return phi;}
 }
