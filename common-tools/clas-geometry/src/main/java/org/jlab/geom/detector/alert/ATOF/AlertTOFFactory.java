@@ -49,7 +49,7 @@ public class AlertTOFFactory implements Factory<AlertTOFDetector, AlertTOFSector
 
 	@Override
 	public AlertTOFSector createSector(ConstantProvider cp, int sectorId) {
-		AlertTOFSector sector = new AlertTOFSector(sectorId+1);
+		AlertTOFSector sector = new AlertTOFSector(sectorId);
 		for (int superlayerId = 0; superlayerId < nsuperl; superlayerId++)
 		     sector.addSuperlayer(createSuperlayer(cp, sectorId, superlayerId));
 		return sector;
@@ -57,7 +57,7 @@ public class AlertTOFFactory implements Factory<AlertTOFDetector, AlertTOFSector
 
 	@Override
 	public AlertTOFSuperlayer createSuperlayer(ConstantProvider cp, int sectorId, int superlayerId) {
-		AlertTOFSuperlayer superlayer = new AlertTOFSuperlayer(sectorId+1, superlayerId+1);
+		AlertTOFSuperlayer superlayer = new AlertTOFSuperlayer(sectorId, superlayerId);
 
 		if (superlayerId == 0) {
 			int nlayers0 = 1;
@@ -94,7 +94,7 @@ public class AlertTOFFactory implements Factory<AlertTOFDetector, AlertTOFSector
 
 		double gap_pad_z = 0.3d; // mm, gap between paddles in z
 
-		AlertTOFLayer layer = new AlertTOFLayer(sectorId+1, superlayerId+1, layerId+1);
+		AlertTOFLayer layer = new AlertTOFLayer(sectorId, superlayerId, layerId);
 
 		double len_b   = layerId * pad_z + layerId * gap_pad_z; // back paddle plan
 		double len_f   = len_b + pad_z; // front paddle plan
