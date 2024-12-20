@@ -25,7 +25,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotter{
     private static final double PHI_THRESHOLD = 0.01;  // Maximum allowed difference in Phi for clustering
     private static final double TIME_THRESHOLD = 1.0;  // Maximum allowed difference in Time for clustering
 
-    // Class to represent event data for wedge and bar
+
     private static class EventData {
         double zWedge;
         double zBar;
@@ -44,7 +44,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotter{
         }
     }
 
-    // Class to represent clusters
+
     private static class Cluster {
         List<EventData> events = new ArrayList<>();
 
@@ -88,22 +88,22 @@ public class ZAndPhiForBarsZPositionAndTimePlotter{
         List<EventData> eventsData = new ArrayList<>();
         List<Cluster> clusters = new ArrayList<>();
 
-        // Extract and process wedge-bar association per event
+
         extractAndProcessEvents(reader, eventsData);
 
-        // Form clusters based on proximity
+
         formClusters(eventsData, clusters);
 
-        // Plot Delta Z, Delta Phi, Delta Time
+
         plotDeltas(eventsData);
 
-        // Plot Cluster Size vs Event Pair Index or Cluster Index
+
         plotClusterSizeVsIndex(clusters);
 
         reader.close();
     }
 
-    // Method to extract and process events per event and calculate deltas
+
     private static void extractAndProcessEvents(HipoReader reader, List<EventData> eventsData) {
         Bank atofAdcBank = new Bank(reader.getSchemaFactory().getSchema("ATOF::adc"));
         Event event = new Event();
@@ -117,27 +117,26 @@ public class ZAndPhiForBarsZPositionAndTimePlotter{
 
             System.out.println("\nProcessing a new event...");
 
-            // Assume wedge and bar times and positions are retrieved or calculated as follows:
+
             for (int wedgeIndex = 0; wedgeIndex < NUM_WEDGES; wedgeIndex++) {
-                // Calculate Z position for the wedge
+
                 double wedgeZ = calculateZForWedge(wedgeIndex);
 
-                // Get the Phi value based on the bar or sector (assuming equal spacing between bars)
-                int barIndex = calculateBarIndex(atofAdcBank, wedgeIndex);
+                             int barIndex = calculateBarIndex(atofAdcBank, wedgeIndex);
                 double wedgePhi = calculatePhiForBar(barIndex);
 
-                // Get wedge time from the ADC bank (assumed stored in the "time" column)
+             
                 double wedgeTime = atofAdcBank.getFloat("time", wedgeIndex);
 
-                // Calculate Z, Phi, and time for the associated bar using the formula for Z
+             
                 double barZ = calculateZForBar(atofAdcBank, wedgeIndex);
                 double barPhi = calculatePhiForBar(barIndex);
-                double barTime = calculateBarTime(atofAdcBank, wedgeIndex); // Assuming geometric method for bar time
+                double barTime = calculateBarTime(atofAdcBank, wedgeIndex); 
 
-                // Store the wedge and bar data
+             
                 eventsData.add(new EventData(wedgeZ, barZ, wedgePhi, barPhi, wedgeTime, barTime));
 
-                // Print the calculated Delta Z, Delta Phi, Delta Time
+             
                 double deltaZ = Math.abs(barZ - wedgeZ);
                 double deltaPhi = Math.abs(barPhi - wedgePhi);
                 double deltaTime = Math.abs(barTime - wedgeTime);
@@ -145,54 +144,44 @@ public class ZAndPhiForBarsZPositionAndTimePlotter{
             }
         }
     }
-
-    // **Updated** method to calculate Z for the bar based on time difference between left and right PMTs
     private static double calculateZForBar(Bank bank, int rowIndex) {
-        double timeLeftPMT = bank.getFloat("time", rowIndex);     // Placeholder for left PMT time
-        double timeRightPMT = bank.getFloat("time", rowIndex + 1); // Placeholder for right PMT time
+        double timeLeftPMT = bank.getFloat("time", rowIndex);     
+        double timeRightPMT = bank.getFloat("time", rowIndex + 1);
         return VELOCITY_EFF * (timeRightPMT - timeLeftPMT) / 2.0;
     }
-
-    // Method to calculate Z position for the wedge based on wedge index
     private static double calculateZForWedge(int wedgeIndex) {
         return (wedgeIndex - (NUM_WEDGES - 1) / 2.0) * WEDGE_SPACING;
     }
 
-    // Calculate the Phi for a wedge (assuming even distribution of bars)
     private static double calculatePhiForBar(int barIndex) {
         double phi = -Math.PI + (2 * Math.PI) * barIndex / NUM_BARS;
         return wrapPhi(phi); // Ensure phi is within the range -π to π
     }
 
-    // Ensure phi is between -π and π
     private static double wrapPhi(double phi) {
         while (phi > Math.PI) phi -= 2 * Math.PI;
         while (phi < -Math.PI) phi += 2 * Math.PI;
         return phi;
     }
 
-    // Assuming a method to calculate bar time (e.g., using geometric method between two PMTs)
-    private static double calculateBarTime(Bank bank, int rowIndex) {
-        // Geometric method to get bar time using two PMT times (from ADC data)
-        double timeLeftPMT = bank.getFloat("time", rowIndex);     // Placeholder for actual left PMT time
-        double timeRightPMT = bank.getFloat("time", rowIndex + 1); // Placeholder for actual right PMT time
-        return (timeLeftPMT + timeRightPMT) / 2;  // Midpoint of two PMTs
-    }
 
-    // Calculate bar index based on the sector, layer, and component (this logic may depend on your geometry)
+    private static double calculateBarTime(Bank bank, int rowIndex) {
+
+        double timeLeftPMT = bank.getFloat("time", rowIndex); 
+        double timeRightPMT = bank.getFloat("time", rowIndex + 1);
+        return (timeLeftPMT + timeRightPMT) / 2; 
+    }
     private static int calculateBarIndex(Bank bank, int rowIndex) {
         int sector = bank.getInt("sector", rowIndex);
         int layer = bank.getInt("layer", rowIndex);
         int component = bank.getInt("component", rowIndex);
-        return sector * 4 * 60 + layer * 60 + component;  // Simple indexing logic
+        return sector * 4 * 60 + layer * 60 + component; 
     }
 
-    // Form clusters based on proximity in Z, Phi, and Time
     private static void formClusters(List<EventData> eventsData, List<Cluster> clusters) {
         for (EventData event : eventsData) {
             boolean addedToCluster = false;
 
-            // Try to add the event to an existing cluster
             for (Cluster cluster : clusters) {
                 if (isWithinProximity(cluster, event)) {
                     cluster.addEvent(event);
@@ -201,7 +190,6 @@ public class ZAndPhiForBarsZPositionAndTimePlotter{
                 }
             }
 
-            // If no suitable cluster was found, create a new one
             if (!addedToCluster) {
                 Cluster newCluster = new Cluster();
                 newCluster.addEvent(event);
@@ -209,7 +197,6 @@ public class ZAndPhiForBarsZPositionAndTimePlotter{
             }
         }
 
-        // Print clusters
         int clusterIndex = 1;
         for (Cluster cluster : clusters) {
             if (cluster.isValidCluster()) {
@@ -218,7 +205,6 @@ public class ZAndPhiForBarsZPositionAndTimePlotter{
         }
     }
 
-    // Check if the event is within proximity of any event in the cluster
     private static boolean isWithinProximity(Cluster cluster, EventData event) {
         for (EventData clusterEvent : cluster.events) {
             if (Math.abs(clusterEvent.zBar - event.zBar) < Z_THRESHOLD &&
@@ -230,13 +216,12 @@ public class ZAndPhiForBarsZPositionAndTimePlotter{
         return false;
     }
 
-    // Plot Delta Z, Delta Phi, and Delta Time
     private static void plotDeltas(List<EventData> eventsData) {
         XYSeries deltaZSeries = new XYSeries("Delta Z");
         XYSeries deltaPhiSeries = new XYSeries("Delta Phi");
         XYSeries deltaTimeSeries = new XYSeries("Delta Time");
 
-        int eventIndex = 0; // Use event index for plotting
+        int eventIndex = 0;
 
         for (EventData event : eventsData) {
             deltaZSeries.add(eventIndex, Math.abs(event.zBar - event.zWedge));
@@ -249,8 +234,6 @@ public class ZAndPhiForBarsZPositionAndTimePlotter{
         plotSeries(deltaPhiSeries, "Delta Phi", "Event Index", "Delta Phi (radians)");
         plotSeries(deltaTimeSeries, "Delta Time", "Event Index", "Delta Time (ns)");
     }
-
-    // Plot Cluster Size vs Event Pair Index or Cluster Index
     private static void plotClusterSizeVsIndex(List<Cluster> clusters) {
         XYSeries clusterSizeSeries = new XYSeries("Cluster Size");
 
@@ -264,15 +247,11 @@ public class ZAndPhiForBarsZPositionAndTimePlotter{
 
         plotSeries(clusterSizeSeries, "Cluster Size", "Cluster Index", "Cluster Size (Number of Hits)");
     }
-
-    // Utility method to display a plot for a given series
     private static void plotSeries(XYSeries series, String title, String xAxisLabel, String yAxisLabel) {
         XYSeriesCollection dataset = new XYSeriesCollection(series);
         JFreeChart chart = ChartFactory.createScatterPlot(title, xAxisLabel, yAxisLabel, dataset, PlotOrientation.VERTICAL, true, true, false);
         displayChart(chart, title);
     }
-
-    // Utility method to display chart in a window
     private static void displayChart(JFreeChart chart, String title) {
         JFrame frame = new JFrame(title);
         frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
