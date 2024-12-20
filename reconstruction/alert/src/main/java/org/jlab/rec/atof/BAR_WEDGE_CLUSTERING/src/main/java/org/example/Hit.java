@@ -1,4 +1,4 @@
-package org.example;
+package org.jlab.rec.atof.BAR_WEDGE_CLUSTERING.org.example;
 
 public class Hit {
     private int sector;
@@ -56,7 +56,7 @@ public class Hit {
 
 
 /*
-package org.example;
+package org.jlab.rec.atof.BAR_WEDGE_CLUSTERING.org.example;
 
 public class Hit {
     private int sector;

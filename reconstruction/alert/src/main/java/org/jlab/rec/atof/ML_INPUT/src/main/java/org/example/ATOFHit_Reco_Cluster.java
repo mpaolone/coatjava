@@ -219,7 +219,7 @@ public class ATOFHit_Reco_Cluster {
 }
 
 /*
-package org.example;
+package org.jlab.rec.atof.ML_INPUT.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;

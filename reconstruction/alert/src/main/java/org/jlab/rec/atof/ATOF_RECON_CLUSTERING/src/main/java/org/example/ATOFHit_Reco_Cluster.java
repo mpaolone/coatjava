@@ -299,7 +299,7 @@ public class ATOFHit_Reco_Cluster extends JFrame {
 
 
 /*
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
 import org.jlab.jnp.hipo4.io.HipoReader;
@@ -586,7 +586,7 @@ public class ATOFHit_Reco_Cluster extends JFrame {
 
 /* does great jhob in plotting 
 
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
 import org.jlab.jnp.hipo4.io.HipoReader;
@@ -876,7 +876,7 @@ public class ATOFHit_Reco_Cluster extends JFrame {
 
 
 /*
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
 import org.jlab.jnp.hipo4.io.HipoReader;
@@ -1189,7 +1189,7 @@ public class ATOFHit_Reco_Cluster extends JFrame {
 
 /*
 
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -1426,7 +1426,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN extends JFrame {
 
 
 /*
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -1639,7 +1639,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN extends JFrame {
 
 
 /* near correct 
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -1867,7 +1867,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN extends JFrame {
 
 
 /*
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -2083,7 +2083,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN  extends JFrame {
 
 
 /* //works good 
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -2305,7 +2305,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN  extends JFrame {
 
 
 /*
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 // Updated code to enforce bar hits on the same bar
 
 import org.jlab.jnp.hipo4.data.Bank;
@@ -2521,7 +2521,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN  extends JFrame {
 
 /*
 
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 
 // Updated code to enforce bar hits on the same bar
@@ -2960,7 +2960,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN  extends JFrame {
 
 
 /* broad clustering all bars and all wedges
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -3159,7 +3159,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN  extends JFrame {
 
 /*
 //works based on per event logic best code 
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -3371,7 +3371,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN extends JFrame {
 
 
 /*
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -3786,7 +3786,7 @@ public class AdvancedClusterAnalysis extends JFrame {
 
 
 /*
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -3986,7 +3986,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN extends JFrame {
 
 
 /*
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -4134,7 +4134,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN  extends JFrame {
 
 
 /*
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -4362,7 +4362,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN  extends JFrame {
 
 
 /*
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -4598,7 +4598,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN extends JFrame {
 
 
 /*
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -4829,7 +4829,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN extends JFrame {
 
 
 /*
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -5070,7 +5070,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN extends JFrame {
 
 
 /*
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -5311,7 +5311,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN extends JFrame {
 /* 
 //it wont plot delta Z vs Proton ANgle/
 
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -5568,7 +5568,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN extends JFrame {
 /*
 //it extracts all hits with sector layer components and order for both bar and wedges
 
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -5814,7 +5814,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN extends JFrame {
 
 
 /*
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -6018,7 +6018,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN {
 
 
 /*
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -6224,7 +6224,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN {
 
 
 /*
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -6439,7 +6439,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN {
 
 
 /*
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -6651,7 +6651,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN {
 
 
 /*
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -6872,7 +6872,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN {
 
 
 /*
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -7100,7 +7100,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN extends Application
 
 
 /*
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -7333,7 +7333,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN extends JFrame {
 
 /* muc better but prints still some wrong info 
    /* 
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -7557,7 +7557,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN extends JFrame {
 
 //plots correctly and prints wrong
 /*
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -7813,7 +7813,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN extends JFrame {
 
 
 /*
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -8018,7 +8018,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN  extends Applicatio
 
 /*
 
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -8198,7 +8198,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN {
 
 // Sector , Layer, Component,ADC,  Time , Ped
 /*
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -8376,7 +8376,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN {
 //Sector and  component 
 
 /*
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -8549,7 +8549,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN {
 
 
 /*
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -8704,7 +8704,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN {
 
 
 /*
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -8857,7 +8857,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN {
 
 
 /*
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -9017,7 +9017,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN {
 
 
 /*
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -9184,7 +9184,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN {
 
 
 /*
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -9326,7 +9326,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN {
 
 
 /*
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -9457,7 +9457,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN{
 
 
 /*
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -9717,7 +9717,7 @@ public class  ZAndPhiForBarsZPositionAndTimePlotterWithDBSCAN {
 
 
 /*
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;

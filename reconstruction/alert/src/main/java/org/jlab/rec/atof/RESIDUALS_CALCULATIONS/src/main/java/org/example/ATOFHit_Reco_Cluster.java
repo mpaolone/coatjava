@@ -315,7 +315,7 @@ public class ATOFHit_Reco_Cluster extends JFrame {
 /*
 //plots residuals very well 
 
-package org.example;
+package org.jlab.rec.atof.RESIDUALS_CALCULATIONS.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;

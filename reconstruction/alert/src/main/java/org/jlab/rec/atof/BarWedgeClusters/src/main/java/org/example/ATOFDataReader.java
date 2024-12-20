@@ -287,7 +287,7 @@ public class ATOFDataReader {
 //creates intermediate bank for ATOF bar clusters
 // and stores output of reconstriction at ATOF::rec bank
 /*
-package org.example;
+package org.jlab.rec.atof.BarWedgeClusters.org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
@@ -490,7 +490,7 @@ public class ATOFDataReader {
 /*
 //
 //makes Bar only clusters 
-package org.example;
+package org.jlab.rec.atof.BarWedgeClusters.org.example;
 
 import org.jlab.jnp.hipo4.data.*;
 import org.jlab.jnp.hipo4.io.HipoReader;
@@ -729,7 +729,7 @@ public class ATOFDataReader {
 
 //basic variables 
 /*
-package org.example;
+package org.jlab.rec.atof.BarWedgeClusters.org.example;
 
 import org.jlab.jnp.hipo4.data.*;
 import org.jlab.jnp.hipo4.io.HipoReader;

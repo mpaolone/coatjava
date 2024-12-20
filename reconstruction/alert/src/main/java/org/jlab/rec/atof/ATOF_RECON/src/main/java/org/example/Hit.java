@@ -1,4 +1,4 @@
-package org.example;
+package org.jlab.rec.atof.ATOF_RECON.org.example;
 
 public class Hit {
     private int sector;

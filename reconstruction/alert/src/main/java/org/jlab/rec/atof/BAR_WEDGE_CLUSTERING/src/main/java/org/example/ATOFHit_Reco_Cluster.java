@@ -299,7 +299,7 @@ public class ATOFHit_Reco_Cluster extends JFrame {
 
 
 /*
-package org.example;
+package org.jlab.rec.atof.BAR_WEDGE_CLUSTERING.org.example;
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
 import org.jlab.jnp.hipo4.io.HipoReader;
@@ -586,7 +586,7 @@ public class ATOFHit_Reco_Cluster extends JFrame {
 
 /* does great jhob in plotting 
 
-package org.example;
+package org.jlab.rec.atof.BAR_WEDGE_CLUSTERING.org.example;
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
 import org.jlab.jnp.hipo4.io.HipoReader;
