@@ -1,5 +1,6 @@
+package org.jlab.rec.atof.ML_INPUT.org.example;
 
-package org.example;
+//package org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;

@@ -1,5 +1,6 @@
+package org.jlab.rec.atof.ATOF_RECON_CLUSTER_BANK.org.example;
 
-package org.example;
+//package org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;

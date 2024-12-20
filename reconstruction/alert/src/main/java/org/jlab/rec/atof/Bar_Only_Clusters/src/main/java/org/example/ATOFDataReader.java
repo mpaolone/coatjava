@@ -1,4 +1,6 @@
-package org.example;
+//package org.example;
+
+package org.jlab.rec.atof.Bar_Only_Clusters.org.example;
 
 import org.jlab.jnp.hipo4.data.*;
 import org.jlab.jnp.hipo4.io.HipoReader;

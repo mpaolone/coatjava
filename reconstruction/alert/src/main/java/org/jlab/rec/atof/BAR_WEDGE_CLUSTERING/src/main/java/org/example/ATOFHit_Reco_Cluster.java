@@ -1,5 +1,6 @@
+package org.jlab.rec.atof.BAR_WEDGE_CLUSTERING.org.example;
 
-package org.example;
+//package org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
