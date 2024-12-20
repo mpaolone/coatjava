@@ -1,0 +1,154 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>org.example</groupId>
+    <artifactId>ZPosition-reader</artifactId>
+    <version>11.0.5-SNAPSHOT</version>
+    <packaging>jar</packaging>
+
+    <!-- Dependencies for the project -->
+    <dependencies>
+        <!-- JNP Hipo4 dependency for working with HIPO files -->
+        <dependency>
+            <groupId>org.jlab.jnp</groupId>
+            <artifactId>jnp-hipo4</artifactId>
+            <version>4.4.0-SNAPSHOT</version>
+        </dependency>
+
+        <!-- JFreeChart dependency for plotting -->
+        <dependency>
+            <groupId>org.jfree</groupId>
+            <artifactId>jfreechart</artifactId>
+            <version>1.5.3</version>
+        </dependency>
+
+        <!-- JCommon (needed for JFreeChart) -->
+        <dependency>
+            <groupId>org.jfree</groupId>
+            <artifactId>jcommon</artifactId>
+            <version>1.0.24</version>
+        </dependency>
+
+        <!-- Smile Core dependency for DBSCAN clustering -->
+        <dependency>
+            <groupId>com.github.haifengl</groupId>
+            <artifactId>smile-core</artifactId>
+            <version>2.6.0</version>
+        </dependency>
+
+        <!-- Smile Plot dependency for visualization -->
+        <dependency>
+            <groupId>com.github.haifengl</groupId>
+            <artifactId>smile-plot</artifactId>
+            <version>2.6.0</version>
+        </dependency>
+
+        <!-- Smile Math dependency for advanced mathematical operations -->
+        <dependency>
+            <groupId>com.github.haifengl</groupId>
+            <artifactId>smile-math</artifactId>
+            <version>2.6.0</version>
+        </dependency>
+
+        <!-- Log4j (optional, for logging) -->
+        <dependency>
+            <groupId>org.apache.logging.log4j</groupId>
+            <artifactId>log4j-core</artifactId>
+            <version>2.14.1</version>
+        </dependency>
+
+        <!-- CLAS12 Reconstruction dependencies -->
+        <dependency>
+            <groupId>org.jlab.clas</groupId>
+            <artifactId>clas-reco</artifactId>
+            <version>11.0.5-SNAPSHOT</version>
+        </dependency>
+
+        <!-- CLAS12 Geometry dependencies -->
+        <dependency>
+            <groupId>org.jlab.clas</groupId>
+            <artifactId>clas-geometry</artifactId>
+            <version>11.0.5-SNAPSHOT</version>
+        </dependency>
+
+        <!-- ALERT Geometry dependencies -->
+<!--
+        <dependency>
+            <groupId>org.jlab.clas12.detector</groupId>
+            <artifactId>clas12detector-alert</artifactId>
+            <version>1.0-SNAPSHOT</version>
+        </dependency>
+-->	
+        <!-- Slf4j (used with Log4j for logging) -->
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-api</artifactId>
+            <version>1.7.30</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.7.30</version>
+        </dependency>
+
+    </dependencies>
+
+<repositories>
+    <repository>
+        <id>clas12maven</id>
+        <url>https://clasweb.jlab.org/clas12maven/j4np/maven</url>
+        <snapshots>
+            <enabled>false</enabled>
+        </snapshots>
+    </repository>
+</repositories>
+
+
+
+
+
+    <!-- Build configuration -->
+    <build>
+        <plugins>
+            <!-- Compiler plugin to specify Java version -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version>
+                <configuration>
+                    <source>1.8</source>
+                    <target>1.8</target>
+                </configuration>
+            </plugin>
+
+            <!-- Maven assembly plugin to bundle dependencies into a single JAR -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-assembly-plugin</artifactId>
+                <version>3.3.0</version>
+                <configuration>
+                    <archive>
+                        <manifest>
+                            <mainClass>org.example.ATOFDataReader</mainClass> <!-- Main class for your application -->
+                        </manifest>
+                    </archive>
+                    <descriptorRefs>
+                        <descriptorRef>jar-with-dependencies</descriptorRef>
+                    </descriptorRefs>
+                </configuration>
+                <executions>
+                    <execution>
+                        <id>make-assembly</id>
+                        <phase>package</phase>
+                        <goals>
+                            <goal>single</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+        </plugins>
+    </build>
+</project>
