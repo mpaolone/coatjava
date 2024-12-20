@@ -35,7 +35,7 @@ public class ATOFHit_Reco_Cluster extends JFrame {
     private static List<Integer> barClusterSizes = new ArrayList<>();
     private static Map<Integer, Integer> clusterSizeCounts = new HashMap<>();
 
-    // New lists to store weighted average values
+
     private static List<Double> zClusterList = new ArrayList<>();
     private static List<Double> phiClusterList = new ArrayList<>();
     private static List<Double> timeClusterList = new ArrayList<>();
@@ -95,14 +95,12 @@ public class ATOFHit_Reco_Cluster extends JFrame {
                 else if (hit.layer >= 10 && hit.layer <= 19) wedgeHits.add(hit);
             }
 
-            // Bar-only clustering: Requires exactly 2 hits
+
             if (barHits.size() == 2) {
                 barClusterSizes.add(2);
             } else {
-                barClusterSizes.add(null); // No valid bar cluster for this event
+                barClusterSizes.add(null); 
             }
-
-            // Bar and Wedge Clustering
             if (barHits.size() >= 2) {
                 Hit barLeft = barHits.get(0);
                 Hit barRight = barHits.get(1);
