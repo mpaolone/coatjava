@@ -1,1 +1,1 @@
-used mvn clean install to compile those programs and succesfully compiled in ifarm or local directory. 
+used mvn clean install to compile those programs and succesfully compiled in ifarm or local directory. All of the programs in each directory can be compiled and run to produce the output. Need to git clone and run "mvn clean install". Then run using java -jar target/.jar hipofile  
