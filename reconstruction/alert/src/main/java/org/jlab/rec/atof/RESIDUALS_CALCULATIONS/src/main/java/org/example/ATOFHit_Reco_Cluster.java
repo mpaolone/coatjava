@@ -1,7 +1,7 @@
 //below this code previous version of code also works to produce residual related  plots 
 //package org.example;
 
-package org.jlab.rec.atof.RESIDUALS_CALCULATIONS.org.example;
+package org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;

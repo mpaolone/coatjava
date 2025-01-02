@@ -1,4 +1,4 @@
-package org.jlab.rec.atof.ATOF_RECON_CLUSTERING.org.example;
+package org.example;
 
 //package org.example;
 

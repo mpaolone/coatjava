@@ -1,4 +1,4 @@
-package org.jlab.rec.atof.ATOF_RECON_CLUSTER_BANK.org.example;
+package org.example;
 
 //package org.example;
 
