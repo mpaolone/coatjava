@@ -49,10 +49,10 @@ public class ModeAHDC extends HipoExtractor  {
 		short[] samplesCorr; //Waveform after offset (pedestal) correction
 		int binNumber = 0; //Number of bins in one waveform
 
-		float timeRiseCFA = 0; // moment when the signal reaches a Constant Fraction of its Amplitude uphill (fitted)
-		float timeFallCFA = 0; // moment when the signal reaches a Constant Fraction of its Amplitude downhill (fitted)
-		float timeOverThresholdCFA = 0; // is equal to (timeFallCFA - timeRiseCFA)
-		float timeCFD =0 ; // time extracted using the Constant Fraction Discriminator (CFD) algorithm (fitted)
+		float leadingEdgeTime = 0; // moment when the signal reaches a Constant Fraction of its Amplitude uphill (fitted)
+		float trailingEdgeTime = 0; // moment when the signal reaches a Constant Fraction of its Amplitude downhill (fitted)
+		float timeOverThreshold = 0; // is equal to (timeFallCFA - timeRiseCFA)
+		float constantFractionTime ; // time extracted using the Constant Fraction Discriminator (CFD) algorithm (fitted)
 		/// /////////////////////////
 		// Begin waveform correction
 		/// ////////////////////////
@@ -129,25 +129,26 @@ public class ModeAHDC extends HipoExtractor  {
 		//computeTimeAtConstantFractionAmplitude(samplingTime,amplitudeFractionCFA);
 		/**
 		 * This method determines the moment when the signal reaches a Constant Fraction of its Amplitude (i.e fraction*adcMax)
-		 * It fills the attributs : timeRiseCFA, timeFallCFA, timeOverThresholdCFA
+		 * It fills the attributs : leadingEdgeTime trailingEdgeTime, timeOverThreshold
+                 *
 		 * @param samplingTime time between 2 ADC bins
 		 * @param amplitudeFraction amplitude fraction between 0 and 1
 		 */
 		//private void computeTimeAtConstantFractionAmplitude(float samplingTime, float amplitudeFractionCFA){
 			float threshold = amplitudeFractionCFA*adcMax;
-			// timeRiseCFA
+			// leadingEdgeTime
 			int binRise = 0;
 			for (int bin = 0; bin < binMax; bin++){
 				if (samplesCorr[bin] < threshold)
 					binRise = bin;  // last pass below threshold and before adcMax
-			} // at this stage : binRise < timeRiseCFA/samplingTime <= binRise + 1 // timeRiseCFA is determined by assuming a linear fit between binRise and binRise + 1
+			} // at this stage : binRise < leadingEdgeTime/samplingTime <= binRise + 1 // leadingEdgeTime is determined by assuming a linear fit between binRise and binRise + 1
 			float slopeRise = 0;
 			if (binRise + 1 <= binNumber-1)
 				slopeRise = samplesCorr[binRise+1] - samplesCorr[binRise];
 			float fittedBinRise = (slopeRise == 0) ? binRise : binRise + (threshold - samplesCorr[binRise])/slopeRise;
-			timeRiseCFA = (fittedBinRise + binOffset)*samplingTime; // binOffset is determined in wavefromCorrection() // must be the same for all time ? // or must be defined using fittedBinRise*sparseSample
+			leadingEdgeTime = (fittedBinRise + binOffset)*samplingTime; // binOffset is determined in wavefromCorrection() // must be the same for all time ? // or must be defined using fittedBinRise*sparseSample
 
-			// timeFallCFA
+			// trailingEdgeTime
 			int binFall = binMax;
 			for (int bin = binMax; bin < binNumber; bin++){
 				if (samplesCorr[bin] > threshold){
@@ -157,15 +158,15 @@ public class ModeAHDC extends HipoExtractor  {
 					binFall = bin;
 					break; // first pass below the threshold
 				}
-			} // at this stage : binFall - 1 <= timeRiseCFA/samplingTime < binFall // timeFallCFA is determined by assuming a linear fit between binFall - 1 and binFall
+			} // at this stage : binFall - 1 <= timeRiseCFA/samplingTime < binFall // trailingEdgeTime is determined by assuming a linear fit between binFall - 1 and binFall
 			float slopeFall = 0;
 			if (binFall - 1 >= 0)
 				slopeFall = samplesCorr[binFall] - samplesCorr[binFall-1];
 			float fittedBinFall = (slopeFall == 0) ? binFall : binFall-1 + (threshold - samplesCorr[binFall-1])/slopeFall;
-			timeFallCFA = (fittedBinFall + binOffset)*samplingTime;
+			trailingEdgeTime = (fittedBinFall + binOffset)*samplingTime;
 
 			// timeOverThreshold
-			timeOverThresholdCFA = timeFallCFA - timeRiseCFA;
+			timeOverThreshold = trailingEdgeTime - leadingEdgeTime;
 		//}
 		/// /////////////////////////
 		// Begin computeTimeUsingConstantFractionDiscriminator
@@ -173,7 +174,7 @@ public class ModeAHDC extends HipoExtractor  {
 		//computeTimeUsingConstantFractionDiscriminator(samplingTime,fractionCFD,binDelayCFD);
 		/**
 		 * This methods extracts a time using the Constant Fraction Discriminator (CFD) algorithm
-		 * It fills the attribut : timeCFD
+		 * It fills the attribut : constantFractionTime
 		 * @param samplingTime time between 2 ADC bins
 		 * @param fractionCFD CFD fraction parameter between 0 and 1
 		 * @param binDelayCFD CFD delay parameter
@@ -202,12 +203,12 @@ public class ModeAHDC extends HipoExtractor  {
 			for (int bin = binHumpInf; bin <= binHumpSup; bin++){
 				if (signal[bin] < 0)
 					binZero = bin; // last pass below zero
-			} // at this stage : binZero < timeCFD/samplingTime <= binZero + 1 // timeCFD is determined by assuming a linear fit between binZero and binZero + 1
+			} // at this stage : binZero < constantFractionTime/samplingTime <= binZero + 1 // constantFractionTime is determined by assuming a linear fit between binZero and binZero + 1
 			float slopeCFD = 0;
 			if (binZero + 1 <= binNumber)
 				slopeCFD = signal[binZero+1] - signal[binZero];
 			float fittedBinZero = (slopeCFD == 0) ? binZero : binZero + (0 - signal[binZero])/slopeCFD;
-			timeCFD = (fittedBinZero + binOffset)*samplingTime;
+			constantFractionTime = (fittedBinZero + binOffset)*samplingTime;
 
 		//}
 
@@ -236,10 +237,10 @@ public class ModeAHDC extends HipoExtractor  {
 		pulse.time = timeMax;
 		pulse.timestamp = timestamp;
 		pulse.integral = integral;
-		pulse.timeRiseCFA = timeRiseCFA;
-		pulse.timeFallCFA = timeFallCFA;
-		pulse.timeOverThresholdCFA = timeOverThresholdCFA;
-		pulse.timeCFD = timeCFD;
+		pulse.leadingEdgeTime  = leadingEdgeTime ;
+		pulse.trailingEdgeTime = trailingEdgeTime;
+		pulse.timeOverThreshold = timeOverThreshold;
+		pulse.constantFractionTime = constantFractionTime;
 		//pulse.binMax = binMax;
 		//pulse.binOffset = binOffset;
 		pulse.pedestal = adcOffset;
