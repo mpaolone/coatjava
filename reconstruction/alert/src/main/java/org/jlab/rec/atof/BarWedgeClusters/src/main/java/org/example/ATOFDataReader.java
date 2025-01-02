@@ -5,7 +5,7 @@
 
 //package org.example;
 
-package org.jlab.rec.atof.BarWedgeClusters.org.example;
+package org.example;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;

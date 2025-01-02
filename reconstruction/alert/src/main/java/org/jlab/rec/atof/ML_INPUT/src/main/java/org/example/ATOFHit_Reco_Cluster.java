@@ -1,4 +1,4 @@
-package org.jlab.rec.atof.ML_INPUT.org.example;
+package org.example;
 
 //package org.example;
 
