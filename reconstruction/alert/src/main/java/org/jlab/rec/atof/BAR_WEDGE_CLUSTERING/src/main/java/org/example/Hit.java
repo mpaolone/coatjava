@@ -1,6 +1,6 @@
-//package org.jlab.rec.atof.BAR_WEDGE_CLUSTERING.org.example;
+package org.jlab.rec.atof.BAR_WEDGE_CLUSTERING;
 
-package org.example;
+//package org.example;
 
 public class Hit {
     private int sector;

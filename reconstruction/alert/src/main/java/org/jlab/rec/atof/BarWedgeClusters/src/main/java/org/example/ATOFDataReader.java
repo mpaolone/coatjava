@@ -1,11 +1,7 @@
 //performs pervent bar an dbar+wedge basic level of clustering
 //stores cluster output into ATOF::rec bank
 //this is the most basic verison
-
-
-//package org.example;
-
-package org.example;
+package org.jlab.rec.atof.BarWedgeClusters;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;

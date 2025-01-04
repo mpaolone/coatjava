@@ -1,5 +1,4 @@
-package org.example;
-
+package	org.jlab.rec.atof.HITS_ADC_BANK_CLUSTERING;
 public class Hit {
     private int sector;
     private int layer;

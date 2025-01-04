@@ -1,6 +1,4 @@
-//package org.jlab.rec.atof.RESIDUALS_CALCULATIONS.org.example;
-
-package org.example;
+package org.jlab.rec.atof.RESIDUALS_CALCULATIONS;
 
 public class Hit {
     private int sector;

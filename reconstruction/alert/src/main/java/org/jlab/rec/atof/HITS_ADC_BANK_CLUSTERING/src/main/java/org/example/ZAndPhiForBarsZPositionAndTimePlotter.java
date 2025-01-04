@@ -1,4 +1,4 @@
-package org.example;
+package org.jlab.rec.atof.HITS_ADC_BANK_CLUSTERING;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
