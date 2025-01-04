@@ -94,7 +94,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>org.example.ATOFDataReader</mainClass>
+                            <mainClass>org.jlab.rec.atof.BarWedgeClusters.ATOFDataReader</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

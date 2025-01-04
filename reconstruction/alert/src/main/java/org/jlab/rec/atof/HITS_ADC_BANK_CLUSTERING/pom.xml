@@ -94,7 +94,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>org.example.ZAndPhiForBarsZPositionAndTimePlotter</mainClass>
+                            <mainClass>org.jlab.rec.atof.HITS_ADC_BANK_CLUSTERING.ZAndPhiForBarsZPositionAndTimePlotter</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

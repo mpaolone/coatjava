@@ -94,7 +94,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>org.example.ATOFHit_Reco_Cluster</mainClass>
+                            <mainClass>org.jlab.rec.atof.ML_INPUT.ATOFHit_Reco_Cluster</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>

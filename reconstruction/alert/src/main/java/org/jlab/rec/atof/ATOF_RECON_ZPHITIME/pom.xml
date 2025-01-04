@@ -93,8 +93,8 @@
                 <version>3.3.0</version>
                 <configuration>
                     <archive>
-                        <manifest>
-                            <mainClass>org.example.ATOFDataReader</mainClass>
+                      <manifest>
+                            <mainClass>org.jlab.rec.atof.ATOF_RECON_ZPHITIME.ATOFDataReader</mainClass>
                         </manifest>
                     </archive>
                     <descriptorRefs>
