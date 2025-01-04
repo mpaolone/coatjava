@@ -30,7 +30,7 @@ jobs:
     - name: Set up JDK
       uses: actions/setup-java@v3
       with:
-        java-version: '21z' # Use JDK 8 or adjust to your required version
+        java-version: '17' # Use JDK 8 or adjust to your required version
         distribution: 'adopt'
 
     # Configure Maven settings for custom repositories
