@@ -94,9 +94,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                          <mainClass>org.jlab.rec.atof.ATOF_RECON.ZAndPhiForBarsZPositionAndTimePlotter</mainClass>
-
-                          
+                          <mainClass>org.jlab.rec.atof.ATOF_RECON.ZAndPhiForBarsZPositionAndTimePlotter</mainClass>                          
                         </manifest>
                     </archive>
                     <descriptorRefs>
