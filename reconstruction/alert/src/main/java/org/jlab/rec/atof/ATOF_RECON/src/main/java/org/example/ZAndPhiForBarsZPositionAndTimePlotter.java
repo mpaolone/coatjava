@@ -1,4 +1,4 @@
-package org.jlab.rec.atof.ATOF_RECON_ZPHITIME;
+package org.jlab.rec.atof.ATOF_RECON;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
