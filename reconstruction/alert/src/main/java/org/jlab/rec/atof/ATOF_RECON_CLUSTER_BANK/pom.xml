@@ -71,7 +71,7 @@
             <id>clas12maven</id>
             <url>https://clasweb.jlab.org/clas12maven/j4np/maven</url>
             <snapshots>
-                <enabled>false</enabled>
+                <enabled>true</enabled>
             </snapshots>
         </repository>
     </repositories>
