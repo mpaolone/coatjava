@@ -1,5 +1,5 @@
-package org.jlab.rec.atof.ML_INPUT.org.example;
-
+//package org.jlab.rec.atof.ML_INPUT.org.example;
+package org.example;
 public class Hit {
     private int sector;
     private int layer;

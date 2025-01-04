@@ -1,4 +1,5 @@
-package org.jlab.rec.atof.BarWedgeClusters.org.example;
+//package org.jlab.rec.atof.BarWedgeClusters.org.example;
+package org.example;
 
 public class Hit {
     private int sector;

@@ -1,4 +1,5 @@
-package org.jlab.rec.atof.Bar_Only_Clusters.org.example;
+//package org.jlab.rec.atof.Bar_Only_Clusters.org.example;
+package org.example;
 
 public class Hit {
     private int sector;
