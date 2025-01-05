@@ -14,7 +14,7 @@
             <artifactId>jnp-hipo4</artifactId>
             <version>4.1-SNAPSHOT</version>
         </dependency>
-        <dependency>
+<!--        <dependency>
             <groupId>org.jfree</groupId>
             <artifactId>jfreechart</artifactId>
             <scope>compile</scope>
@@ -24,7 +24,31 @@
             <groupId>org.jfree</groupId>
             <artifactId>jcommon</artifactId>
             <version>1.0.24</version>
-        </dependency>
+            </dependency> -->
+
+<dependencies>
+    <dependency>
+        <groupId>org.jfree</groupId>
+        <artifactId>jfreechart</artifactId>
+        <version>1.5.3</version>
+        <scope>system</scope>
+        <systemPath>${project.basedir}/lib/jfreechart-1.5.3.jar</systemPath>
+    </dependency>
+    <dependency>
+        <groupId>org.jfree</groupId>
+        <artifactId>jcommon</artifactId>
+        <version>1.0.24</version>
+        <scope>system</scope>
+        <systemPath>${project.basedir}/lib/jcommon-1.0.24.jar</systemPath>
+    </dependency>
+</dependencies>
+
+
+
+
+
+
+
         <dependency>
             <groupId>com.github.haifengl</groupId>
             <artifactId>smile-core</artifactId>
