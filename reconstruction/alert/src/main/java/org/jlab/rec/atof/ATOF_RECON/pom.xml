@@ -27,7 +27,8 @@
             <version>1.0.24</version>
             </dependency>
 
-<!-- <dependencies>
+<!--
+ <dependencies>
     <dependency>
         <groupId>org.jfree</groupId>
         <artifactId>jfreechart</artifactId>
