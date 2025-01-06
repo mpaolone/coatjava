@@ -14,7 +14,7 @@
             <artifactId>jnp-hipo4</artifactId>
             <version>4.1-SNAPSHOT</version>
         </dependency>
-<!--
+
         <dependency>
             <groupId>org.jfree</groupId>
             <artifactId>jfreechart</artifactId>
@@ -26,9 +26,8 @@
             <artifactId>jcommon</artifactId>
             <version>1.0.24</version>
             </dependency>
--->
 
-
+<!--
  <dependencies>
     <dependency>
         <groupId>org.jfree</groupId>
@@ -46,8 +45,7 @@
     </dependency>
 </dependencies>
 
-
-
+-->
 
 
 
