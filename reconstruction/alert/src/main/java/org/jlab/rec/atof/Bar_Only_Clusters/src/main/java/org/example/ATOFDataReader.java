@@ -1,4 +1,4 @@
-package org.jlab.rec.atof.ATOF_RECON_ZPHITIME;
+package org.jlab.rec.atof.Bar_Only_Clusters;
 import org.jlab.jnp.hipo4.data.*;
 import org.jlab.jnp.hipo4.io.HipoReader;
 import java.util.*;
