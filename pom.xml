@@ -9,14 +9,14 @@
     <packaging>jar</packaging>
 
     <dependencies>
-        <!-- JNP Hipo Dependency -->
+      
         <dependency>
             <groupId>org.jlab.jnp</groupId>
             <artifactId>jnp-hipo4</artifactId>
             <version>4.1-SNAPSHOT</version>
         </dependency>
 
-        <!-- JFreeChart Dependencies -->
+      
         <dependency>
             <groupId>org.jfree</groupId>
             <artifactId>jfreechart</artifactId>
@@ -28,7 +28,7 @@
             <version>1.0.24</version>
         </dependency>
 
-        <!-- SMILE (Statistical Machine Intelligence and Learning Engine) -->
+   
         <dependency>
             <groupId>com.github.haifengl</groupId>
             <artifactId>smile-core</artifactId>
@@ -45,7 +45,7 @@
             <version>2.6.0</version>
         </dependency>
 
-        <!-- Logging Frameworks -->
+  
         <dependency>
             <groupId>org.apache.logging.log4j</groupId>
             <artifactId>log4j-core</artifactId>
@@ -62,7 +62,7 @@
             <version>1.7.30</version>
         </dependency>
 
-        <!-- CLAS Dependencies -->
+     
         <dependency>
             <groupId>org.jlab.clas</groupId>
             <artifactId>clas-reco</artifactId>
@@ -76,7 +76,7 @@
     </dependencies>
 
     <repositories>
-        <!-- CLAS12 Maven Repository -->
+     
         <repository>
             <id>clas12maven</id>
             <url>https://clasweb.jlab.org/clas12maven/j4np/maven</url>
@@ -88,7 +88,7 @@
 
     <build>
         <plugins>
-            <!-- Compiler Plugin -->
+   
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
@@ -99,7 +99,7 @@
                 </configuration>
             </plugin>
 
-            <!-- Assembly Plugin for Building Jar with Dependencies -->
+          
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-assembly-plugin</artifactId>
