@@ -13,11 +13,9 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    
     - name: Checkout code
       uses: actions/checkout@v3
 
-    
     - name: Cache Maven dependencies
       uses: actions/cache@v3
       with:
@@ -26,16 +24,15 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-maven-
 
-    
     - name: Set up JDK
       uses: actions/setup-java@v3
       with:
-        java-version: '17' 
+        java-version: '17'
         distribution: 'adopt'
 
-    
     - name: Set up Maven settings
-      run: echo "<settings>
+      run: |
+        echo "<settings>
         <profiles>
           <profile>
             <id>custom-repo</id>
@@ -47,9 +44,7 @@ jobs:
             </repositories>
           </profile>
         </profiles>
-      </settings>" > ~/.m2/settings.xml
+        </settings>" > ~/.m2/settings.xml
 
-    
     - name: Build with Maven
       run: mvn clean install -U -X
-
