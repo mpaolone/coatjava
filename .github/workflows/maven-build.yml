@@ -13,11 +13,11 @@ jobs:
     runs-on: ubuntu-latest
 
     steps:
-    # Checkout the code from the repository
+    
     - name: Checkout code
       uses: actions/checkout@v3
 
-    # Cache Maven dependencies
+    
     - name: Cache Maven dependencies
       uses: actions/cache@v3
       with:
@@ -26,14 +26,14 @@ jobs:
         restore-keys: |
           ${{ runner.os }}-maven-
 
-    # Set up Java Development Kit (JDK)
+    
     - name: Set up JDK
       uses: actions/setup-java@v3
       with:
-        java-version: '17' # Use JDK 8 or adjust to your required version
+        java-version: '17' 
         distribution: 'adopt'
 
-    # Configure Maven settings for custom repositories
+    
     - name: Set up Maven settings
       run: echo "<settings>
         <profiles>
@@ -49,7 +49,7 @@ jobs:
         </profiles>
       </settings>" > ~/.m2/settings.xml
 
-    # Build the project with Maven
+    
     - name: Build with Maven
       run: mvn clean install -U -X
 
