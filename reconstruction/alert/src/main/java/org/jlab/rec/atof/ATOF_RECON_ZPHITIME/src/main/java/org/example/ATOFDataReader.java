@@ -1,14 +1,6 @@
 package org.jlab.rec.atof.ATOF_RECON_ZPHITIME;
-
 import org.jlab.jnp.hipo4.data.*;
 import org.jlab.jnp.hipo4.io.HipoReader;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
-
-import javax.swing.*;
 import java.util.*;
 
 public class ATOFDataReader {
@@ -34,13 +26,6 @@ public class ATOFDataReader {
         Bank mcTrueBank = new Bank(schemaFactory.getSchema("MC::True"));
         Event event = new Event();
 
-
-        XYSeries zTruthVsZBar = new XYSeries("ZTruth vs ZBar");
-        XYSeries zTruthVsZWedge = new XYSeries("ZTruth vs ZWedge");
-        XYSeries zBarVsZWedge = new XYSeries("ZBar vs ZWedge");
-        XYSeries deltaZBar = new XYSeries("Delta Z (Truth - ZBar)");
-        XYSeries deltaZWedge = new XYSeries("Delta Z (Truth - ZWedge)");
-
         int eventId = 0;
 
         while (reader.hasNext()) {
@@ -57,28 +42,26 @@ public class ATOFDataReader {
             List<Hit> wedgeHits = new ArrayList<>();
             extractADCData(adcBank, barHits, wedgeHits);
 
-
             List<Hit> zBarHits = calculateZBar(barHits);
 
-	    for (Hit truthBar : truthBarHits) {
+            for (Hit truthBar : truthBarHits) {
                 for (Hit bar : zBarHits) {
-                    zTruthVsZBar.add(truthBar.z, bar.z);
-                    deltaZBar.add(eventId, truthBar.z - bar.z);
+                    System.out.printf("Event %d - ZTruth: %.2f, ZBar: %.2f, Delta Z: %.2f\n", eventId, truthBar.z, bar.z, truthBar.z - bar.z);
                 }
             }
 
             for (Hit truthWedge : truthWedgeHits) {
                 for (Hit wedge : wedgeHits) {
                     if (Math.abs(truthWedge.z - wedge.z) < Z_TOLERANCE) {
-                        zTruthVsZWedge.add(truthWedge.z, wedge.z);
-                        deltaZWedge.add(eventId, truthWedge.z - wedge.z);
+                        System.out.printf("Event %d - ZTruth: %.2f, ZWedge: %.2f, Delta Z: %.2f\n", eventId, truthWedge.z, wedge.z, truthWedge.z - wedge.z);
                     }
                 }
             }
+
             for (Hit bar : zBarHits) {
                 for (Hit wedge : wedgeHits) {
                     if (Math.abs(bar.z - wedge.z) < Z_TOLERANCE) {
-                        zBarVsZWedge.add(bar.z, wedge.z);
+                        System.out.printf("Event %d - ZBar: %.2f, ZWedge: %.2f\n", eventId, bar.z, wedge.z);
                     }
                 }
             }
@@ -86,15 +69,6 @@ public class ATOFDataReader {
         }
 
         reader.close();
-
-        SwingUtilities.invokeLater(() -> {
-            showScatterPlot(zTruthVsZBar, "ZTruth vs ZBar", "ZTruth", "ZBar");
-            showScatterPlot(zTruthVsZWedge, "ZTruth vs ZWedge", "ZTruth", "ZWedge");
-            showScatterPlot(zBarVsZWedge, "ZBar vs ZWedge", "ZBar", "ZWedge");
-            showScatterPlot(deltaZBar, "Delta Z (Truth - ZBar)", "Event ID", "Delta Z");
-            showScatterPlot(deltaZWedge, "Delta Z (Truth - ZWedge)", "Event ID", "Delta Z");
-        });
-
         System.out.println("Processing Complete.");
     }
 
@@ -166,16 +140,6 @@ public class ATOFDataReader {
         for (Hit wedge : wedges) System.out.printf("Wedge: Z=%.2f, Phi=%.4f, Time=%.2f\n", wedge.z, wedge.phi, wedge.time);
     }
 
-    private static void showScatterPlot(XYSeries series, String title, String xLabel, String yLabel) {
-        XYSeriesCollection dataset = new XYSeriesCollection(series);
-        JFreeChart chart = ChartFactory.createScatterPlot(title, xLabel, yLabel, dataset);
-        JFrame frame = new JFrame(title);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(new ChartPanel(chart));
-        frame.pack();
-        frame.setVisible(true);
-    }
-
     static class Hit {
         float z, phi, time;
         int component, order;
@@ -193,4 +157,7 @@ public class ATOFDataReader {
         }
     }
 }
+
+
+
 

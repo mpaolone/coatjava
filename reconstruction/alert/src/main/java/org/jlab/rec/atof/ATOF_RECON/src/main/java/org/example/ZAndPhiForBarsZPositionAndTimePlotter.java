@@ -4,29 +4,10 @@ import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
 import org.jlab.jnp.hipo4.io.HipoReader;
 
-/*
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
-*/
-
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
-import org.jfree.data.statistics.HistogramDataset;
-
-
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.List;
 
-public class ZAndPhiForBarsZPositionAndTimePlotter{
+public class ZAndPhiForBarsZPositionAndTimePlotter {
 
     private static final int NUM_WEDGES = 10;  // Total number of wedges in each bar
     private static final int NUM_BARS = 60;    // Total number of bars
@@ -35,7 +16,6 @@ public class ZAndPhiForBarsZPositionAndTimePlotter{
     private static final double Z_THRESHOLD = 30.0;     // Maximum allowed difference in Z for clustering
     private static final double PHI_THRESHOLD = 0.01;  // Maximum allowed difference in Phi for clustering
     private static final double TIME_THRESHOLD = 1.0;  // Maximum allowed difference in Time for clustering
-
 
     private static class EventData {
         double zWedge;
@@ -48,13 +28,12 @@ public class ZAndPhiForBarsZPositionAndTimePlotter{
         EventData(double zWedge, double zBar, double phiWedge, double phiBar, double timeWedge, double timeBar) {
             this.zWedge = zWedge;
             this.zBar = zBar;
-            this.phiWedge = wrapPhi(phiWedge); // Ensure phi is within -π to π
-            this.phiBar = wrapPhi(phiBar);     // Ensure phi is within -π to π
+            this.phiWedge = wrapPhi(phiWedge);
+            this.phiBar = wrapPhi(phiBar);
             this.timeWedge = timeWedge;
             this.timeBar = timeBar;
         }
     }
-
 
     private static class Cluster {
         List<EventData> events = new ArrayList<>();
@@ -99,21 +78,11 @@ public class ZAndPhiForBarsZPositionAndTimePlotter{
         List<EventData> eventsData = new ArrayList<>();
         List<Cluster> clusters = new ArrayList<>();
 
-
         extractAndProcessEvents(reader, eventsData);
-
-
         formClusters(eventsData, clusters);
-
-
-        plotDeltas(eventsData);
-
-
-        plotClusterSizeVsIndex(clusters);
 
         reader.close();
     }
-
 
     private static void extractAndProcessEvents(HipoReader reader, List<EventData> eventsData) {
         Bank atofAdcBank = new Bank(reader.getSchemaFactory().getSchema("ATOF::adc"));
@@ -128,26 +97,17 @@ public class ZAndPhiForBarsZPositionAndTimePlotter{
 
             System.out.println("\nProcessing a new event...");
 
-
             for (int wedgeIndex = 0; wedgeIndex < NUM_WEDGES; wedgeIndex++) {
-
                 double wedgeZ = calculateZForWedge(wedgeIndex);
-
-                             int barIndex = calculateBarIndex(atofAdcBank, wedgeIndex);
+                int barIndex = calculateBarIndex(atofAdcBank, wedgeIndex);
                 double wedgePhi = calculatePhiForBar(barIndex);
-
-             
                 double wedgeTime = atofAdcBank.getFloat("time", wedgeIndex);
-
-             
                 double barZ = calculateZForBar(atofAdcBank, wedgeIndex);
                 double barPhi = calculatePhiForBar(barIndex);
-                double barTime = calculateBarTime(atofAdcBank, wedgeIndex); 
+                double barTime = calculateBarTime(atofAdcBank, wedgeIndex);
 
-             
                 eventsData.add(new EventData(wedgeZ, barZ, wedgePhi, barPhi, wedgeTime, barTime));
 
-             
                 double deltaZ = Math.abs(barZ - wedgeZ);
                 double deltaPhi = Math.abs(barPhi - wedgePhi);
                 double deltaTime = Math.abs(barTime - wedgeTime);
@@ -155,18 +115,20 @@ public class ZAndPhiForBarsZPositionAndTimePlotter{
             }
         }
     }
+
     private static double calculateZForBar(Bank bank, int rowIndex) {
-        double timeLeftPMT = bank.getFloat("time", rowIndex);     
+        double timeLeftPMT = bank.getFloat("time", rowIndex);
         double timeRightPMT = bank.getFloat("time", rowIndex + 1);
         return VELOCITY_EFF * (timeRightPMT - timeLeftPMT) / 2.0;
     }
+
     private static double calculateZForWedge(int wedgeIndex) {
         return (wedgeIndex - (NUM_WEDGES - 1) / 2.0) * WEDGE_SPACING;
     }
 
     private static double calculatePhiForBar(int barIndex) {
         double phi = -Math.PI + (2 * Math.PI) * barIndex / NUM_BARS;
-        return wrapPhi(phi); // Ensure phi is within the range -π to π
+        return wrapPhi(phi);
     }
 
     private static double wrapPhi(double phi) {
@@ -175,18 +137,17 @@ public class ZAndPhiForBarsZPositionAndTimePlotter{
         return phi;
     }
 
-
     private static double calculateBarTime(Bank bank, int rowIndex) {
-
-        double timeLeftPMT = bank.getFloat("time", rowIndex); 
+        double timeLeftPMT = bank.getFloat("time", rowIndex);
         double timeRightPMT = bank.getFloat("time", rowIndex + 1);
-        return (timeLeftPMT + timeRightPMT) / 2; 
+        return (timeLeftPMT + timeRightPMT) / 2;
     }
+
     private static int calculateBarIndex(Bank bank, int rowIndex) {
         int sector = bank.getInt("sector", rowIndex);
         int layer = bank.getInt("layer", rowIndex);
         int component = bank.getInt("component", rowIndex);
-        return sector * 4 * 60 + layer * 60 + component; 
+        return sector * 4 * 60 + layer * 60 + component;
     }
 
     private static void formClusters(List<EventData> eventsData, List<Cluster> clusters) {
@@ -226,48 +187,12 @@ public class ZAndPhiForBarsZPositionAndTimePlotter{
         }
         return false;
     }
-
-    private static void plotDeltas(List<EventData> eventsData) {
-        XYSeries deltaZSeries = new XYSeries("Delta Z");
-        XYSeries deltaPhiSeries = new XYSeries("Delta Phi");
-        XYSeries deltaTimeSeries = new XYSeries("Delta Time");
-
-        int eventIndex = 0;
-
-        for (EventData event : eventsData) {
-            deltaZSeries.add(eventIndex, Math.abs(event.zBar - event.zWedge));
-            deltaPhiSeries.add(eventIndex, Math.abs(event.phiBar - event.phiWedge));
-            deltaTimeSeries.add(eventIndex, Math.abs(event.timeBar - event.timeWedge));
-            eventIndex++;
-        }
-
-        plotSeries(deltaZSeries, "Delta Z", "Event Index", "Delta Z (mm)");
-        plotSeries(deltaPhiSeries, "Delta Phi", "Event Index", "Delta Phi (radians)");
-        plotSeries(deltaTimeSeries, "Delta Time", "Event Index", "Delta Time (ns)");
-    }
-    private static void plotClusterSizeVsIndex(List<Cluster> clusters) {
-        XYSeries clusterSizeSeries = new XYSeries("Cluster Size");
-
-        int clusterIndex = 1;
-        for (Cluster cluster : clusters) {
-            if (cluster.isValidCluster()) {
-                System.out.println("Plotting cluster size: " + cluster.getClusterSize());
-                clusterSizeSeries.add(clusterIndex++, cluster.getClusterSize());
-            }
-        }
-
-        plotSeries(clusterSizeSeries, "Cluster Size", "Cluster Index", "Cluster Size (Number of Hits)");
-    }
-    private static void plotSeries(XYSeries series, String title, String xAxisLabel, String yAxisLabel) {
-        XYSeriesCollection dataset = new XYSeriesCollection(series);
-        JFreeChart chart = ChartFactory.createScatterPlot(title, xAxisLabel, yAxisLabel, dataset, PlotOrientation.VERTICAL, true, true, false);
-        displayChart(chart, title);
-    }
-    private static void displayChart(JFreeChart chart, String title) {
-        JFrame frame = new JFrame(title);
-        frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-        frame.add(new ChartPanel(chart));
-        frame.pack();
-        frame.setVisible(true);
-    }
 }
+
+
+
+
+
+
+
+

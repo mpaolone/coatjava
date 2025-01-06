@@ -1,23 +1,13 @@
 package org.jlab.rec.atof.HITS_ADC_BANK_CLUSTERING;
-
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
 import org.jlab.jnp.hipo4.io.HipoReader;
-import org.jfree.chart.ChartFactory;
-import org.jfree.chart.ChartPanel;
-import org.jfree.chart.JFreeChart;
-import org.jfree.chart.plot.PlotOrientation;
-import org.jfree.data.xy.XYSeries;
-import org.jfree.data.xy.XYSeriesCollection;
-import org.jfree.data.statistics.HistogramDataset;
-
-import javax.swing.*;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ZAndPhiForBarsZPositionAndTimePlotter extends JFrame {
+public class ZAndPhiForBarsZPositionAndTimePlotter {
 
     private static final double VEFF = 200.0; // mm/ns
     private static final double BAR_LENGTH = 280.0; // mm
@@ -32,10 +22,6 @@ public class ZAndPhiForBarsZPositionAndTimePlotter extends JFrame {
     private static List<Double> deltaTimeList = new ArrayList<>();
     private static List<Integer> clusterSizes = new ArrayList<>();
     private static Map<Integer, Integer> clusterSizeCounts = new HashMap<>();
-
-    public ZAndPhiForBarsZPositionAndTimePlotter(String title) {
-        super(title);
-    }
 
     public static void main(String[] args) {
         if (args.length < 1) {
@@ -55,9 +41,6 @@ public class ZAndPhiForBarsZPositionAndTimePlotter extends JFrame {
 
         processHitsGlobally(reader);
         reader.close();
-
-      ZAndPhiForBarsZPositionAndTimePlotter demo = new ZAndPhiForBarsZPositionAndTimePlotter("Global Cluster Analysis Plots");
-        demo.createPlots();
 
         // Print summary of cluster sizes
         System.out.println("\nCluster Size Summary:");
@@ -98,7 +81,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotter extends JFrame {
 
                     double deltaT = barHit1.time - barHit2.time;
                     double zBar = VEFF * deltaT / 2;
-                    double tBar = Math.min(barHit1.time - (zBar - BAR_LENGTH / 2) / VEFF, 
+                    double tBar = Math.min(barHit1.time - (zBar - BAR_LENGTH / 2) / VEFF,
                                            barHit2.time - (zBar + BAR_LENGTH / 2) / VEFF);
 
                     List<Hit> clusterWedgeHits = new ArrayList<>();
@@ -122,23 +105,16 @@ public class ZAndPhiForBarsZPositionAndTimePlotter extends JFrame {
                     clusterSizes.add(clusterSize);
                     clusterSizeCounts.put(clusterSize, clusterSizeCounts.getOrDefault(clusterSize, 0) + 1);
 
+                    // Print cluster information
                     System.out.printf("Cluster Formed (Size %d):\n", clusterSize);
                     System.out.printf("  Bar Hits:\n");
-                    System.out.printf("    Bar Hit 1 -> (Sector: %d, Layer: %d, Component: %d, Order: %d, ADC: %d, Time: %.2f ns, Phi: %.2f rad)\n",
-                                      barHit1.sector, barHit1.layer, barHit1.component, barHit1.order, barHit1.adc, barHit1.time, barHit1.phi);
-                    System.out.printf("    Bar Hit 2 -> (Sector: %d, Layer: %d, Component: %d, Order: %d, ADC: %d, Time: %.2f ns, Phi: %.2f rad)\n",
-                                      barHit2.sector, barHit2.layer, barHit2.component, barHit2.order, barHit2.adc, barHit2.time, barHit2.phi);
+                    printHitDetails(barHit1, "Bar Hit 1");
+                    printHitDetails(barHit2, "Bar Hit 2");
                     System.out.printf("  Combined Bar Z and T: ZBar: %.2f mm, TBar: %.2f ns\n", zBar, tBar);
 
                     System.out.println("  Wedge Hits:");
-                    int wedgeCount = 1;
                     for (Hit wedgeHit : clusterWedgeHits) {
-                        double deltaZ = Math.abs(zBar - wedgeHit.zWedge());
-                        double deltaPhi = Math.abs(barHit1.phi - wedgeHit.phi);
-                        double deltaTime = Math.abs(tBar - wedgeHit.time);
-                        System.out.printf("    Wedge Hit %d -> (Sector: %d, Layer: %d, Component: %d, ZWedge: %.2f mm, Phi: %.2f rad, Time: %.2f ns), Delta Z: %.2f mm, Delta Phi: %.2f rad, Delta Time: %.2f ns\n",
-                                          wedgeCount++, wedgeHit.sector, wedgeHit.layer, wedgeHit.component, wedgeHit.zWedge(), wedgeHit.phi, wedgeHit.time,
-                                          deltaZ, deltaPhi, deltaTime);
+                        printHitDetails(wedgeHit, "Wedge Hit");
                     }
                     System.out.println("---- End of Cluster ----\n");
                 }
@@ -157,37 +133,9 @@ public class ZAndPhiForBarsZPositionAndTimePlotter extends JFrame {
         return new Hit(sector, layer, component, order, adc, time, phi);
     }
 
-    private void createPlots() {
-        createHistogramPlot("Delta Z Distribution", "Delta Z (mm)", deltaZList);
-        createHistogramPlot("Delta Time Distribution", "Delta Time (ns)", deltaTimeList);
-        createHistogramPlot("Delta Phi Distribution", "Delta Phi (rad)", deltaPhiList);
-        createScatterPlot("Cluster Size vs Event Index", "Event Index", "Cluster Size", clusterSizes);
-    }
-
-    private void createHistogramPlot(String title, String xAxisLabel, List<Double> data) {
-        HistogramDataset dataset = new HistogramDataset();
-        double[] values = data.stream().mapToDouble(Double::doubleValue).toArray();
-        dataset.addSeries(title, values, 50);
-        JFreeChart histogram = ChartFactory.createHistogram(title, xAxisLabel, "Frequency", dataset, PlotOrientation.VERTICAL, true, true, false);
-        ChartPanel chartPanel = new ChartPanel(histogram);
-        chartPanel.setPreferredSize(new java.awt.Dimension(800, 600));
-        JFrame frame = new JFrame(title);
-        frame.setContentPane(chartPanel);
-        frame.pack();
-        frame.setVisible(true);
-    }
-
-    private void createScatterPlot(String title, String xAxisLabel, String yAxisLabel, List<Integer> xData) {
-        XYSeries series = new XYSeries("Data");
-        for (int i = 0; i < xData.size(); i++) series.add(i, xData.get(i));
-        XYSeriesCollection dataset = new XYSeriesCollection(series);
-        JFreeChart scatterPlot = ChartFactory.createScatterPlot(title, xAxisLabel, yAxisLabel, dataset, PlotOrientation.VERTICAL, true, true, false);
-        ChartPanel chartPanel = new ChartPanel(scatterPlot);
-        chartPanel.setPreferredSize(new java.awt.Dimension(800, 600));
-        JFrame frame = new JFrame(title);
-        frame.setContentPane(chartPanel);
-        frame.pack();
-        frame.setVisible(true);
+    private static void printHitDetails(Hit hit, String label) {
+        System.out.printf("%s -> (Sector: %d, Layer: %d, Component: %d, Order: %d, ADC: %d, Time: %.2f ns, Phi: %.2f rad, Z: %.2f mm)\n",
+                label, hit.sector, hit.layer, hit.component, hit.order, hit.adc, hit.time, hit.phi, hit.zWedge());
     }
 
     static class Hit {
@@ -210,6 +158,9 @@ public class ZAndPhiForBarsZPositionAndTimePlotter extends JFrame {
         }
     }
 }
+
+
+
 
 
 
