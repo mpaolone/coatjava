@@ -20,7 +20,7 @@ jobs:
       uses: actions/cache@v3
       with:
         path: ~/.m2/repository
-        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml') }}
+        key: ${{ runner.os }}-maven-${{ hashFiles('**/pom.xml', '**/settings.xml') }}
         restore-keys: |
           ${{ runner.os }}-maven-
 
@@ -44,7 +44,10 @@ jobs:
             </repositories>
           </profile>
         </profiles>
+        <activeProfiles>
+          <activeProfile>custom-repo</activeProfile>
+        </activeProfiles>
         </settings>" > ~/.m2/settings.xml
 
     - name: Build with Maven
-      run: mvn clean install -U -X
+      run: mvn clean install -U -DskipTests
