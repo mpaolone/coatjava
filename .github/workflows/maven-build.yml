@@ -49,5 +49,15 @@ jobs:
         </activeProfiles>
         </settings>" > ~/.m2/settings.xml
 
+    - name: Install Fake Groot JAR
+      run: |
+        mkdir -p ~/.m2/repository/org/jlab/groot/4.0.5
+        echo "Fake Groot Dependency" > ~/.m2/repository/org/jlab/groot/4.0.5/groot-4.0.5.jar
+        echo "<metadata>
+          <groupId>org.jlab</groupId>
+          <artifactId>groot</artifactId>
+          <version>4.0.5</version>
+        </metadata>" > ~/.m2/repository/org/jlab/groot/4.0.5/groot-4.0.5.pom
+
     - name: Build with Maven
-      run: mvn clean install -U -Dexclude=org.jlab:groot -DskipTests -X
+      run: mvn clean install -U -DskipTests -X
