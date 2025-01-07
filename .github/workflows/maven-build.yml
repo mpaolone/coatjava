@@ -39,7 +39,7 @@ jobs:
             <repositories>
               <repository>
                 <id>clas12maven</id>
-                <url>https://clasweb.jlab.org/clas12maven/j4np/maven/</url>
+                <url>https://clasweb.jlab.org/clas12maven/j4np/maven</url>
               </repository>
             </repositories>
           </profile>
@@ -49,18 +49,5 @@ jobs:
         </activeProfiles>
         </settings>" > ~/.m2/settings.xml
 
-    - name: Install Minimal Groot JAR
-      run: |
-        mkdir -p ~/.m2/repository/org/jlab/groot/4.0.5
-        echo "public class GrootPlaceholder {}" > GrootPlaceholder.java
-        javac GrootPlaceholder.java
-        jar cf groot-4.0.5.jar GrootPlaceholder.class
-        mv groot-4.0.5.jar ~/.m2/repository/org/jlab/groot/4.0.5/
-        echo "<metadata>
-          <groupId>org.jlab</groupId>
-          <artifactId>groot</artifactId>
-          <version>4.0.5</version>
-        </metadata>" > ~/.m2/repository/org/jlab/groot/4.0.5/groot-4.0.5.pom
-
     - name: Build with Maven
-      run: mvn clean install -U -DskipTests -X
+      run: mvn clean install -U -Dexclude=org.jlab:groot -DskipTests
