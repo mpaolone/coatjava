@@ -1,6 +1,6 @@
 //This performs multiclustering, pushes cluster output to ATOF::rec bank, bank is created and output is pushed there!!
 
-package org.jlab.rec.atof.MultiClustering_ATOF_v1;
+package org.jlab.rec.atof.MultiClustering_ATOF_V1;
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
 import org.jlab.jnp.hipo4.data.Schema;
