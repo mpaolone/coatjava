@@ -1,4 +1,4 @@
-package org.example;
+package org.jlab.rec.atof.MultiCLustering_ATOF_V0;
 
 public class Hit {
     private int sector;
