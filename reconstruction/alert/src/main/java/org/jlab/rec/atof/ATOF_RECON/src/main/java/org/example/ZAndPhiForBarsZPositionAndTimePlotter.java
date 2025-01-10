@@ -8,13 +8,13 @@ import java.util.List;
 
 public class ZAndPhiForBarsZPositionAndTimePlotter {
 
-    private static final int NUM_WEDGES = 10;  // Total number of wedges in each bar
-    private static final int NUM_BARS = 60;    // Total number of bars
-    private static final double WEDGE_SPACING = 30.0;  // Spacing between wedges in mm
-    private static final double VELOCITY_EFF = 200.0;  // mm/ns, assumed effective velocity in the bar
-    private static final double Z_THRESHOLD = 30.0;     // Maximum allowed difference in Z for clustering
-    private static final double PHI_THRESHOLD = 0.01;  // Maximum allowed difference in Phi for clustering
-    private static final double TIME_THRESHOLD = 1.0;  // Maximum allowed difference in Time for clustering
+    private static final int NUM_WEDGES = 10;  
+    private static final int NUM_BARS = 60;    
+    private static final double WEDGE_SPACING = 30.0; 
+    private static final double VELOCITY_EFF = 200.0; 
+    private static final double Z_THRESHOLD = 30.0;   
+    private static final double PHI_THRESHOLD = 0.01; 
+    private static final double TIME_THRESHOLD = 1.0; 
 
     private static class EventData {
         double zWedge;
@@ -46,7 +46,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotter {
         }
 
         public boolean isValidCluster() {
-            return events.size() >= 2;  // Valid cluster must have at least 2 hits
+            return events.size() >= 2;  
         }
 
         public void printCluster(int clusterIndex) {
@@ -92,7 +92,7 @@ public class ZAndPhiForBarsZPositionAndTimePlotter {
             event.read(atofAdcBank);
 
             int numRows = atofAdcBank.getRows();
-            if (numRows < NUM_WEDGES) continue;  // Ensure there are enough rows for all wedges in the event
+            if (numRows < NUM_WEDGES) continue;
 
             System.out.println("\nProcessing a new event...");
 
