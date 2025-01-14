@@ -1,6 +1,4 @@
-//This is the code for bar and wedge multiclustering. Per event multiple cluster exists. Code prints the cluster output. 
-
-package org.jlab.rec.atof.MultiClustering_ATOF_TDC_V2;
+ package org.jlab.rec.atof.MultiClustering_ATOF_TDC_V2;
 
 import org.jlab.jnp.hipo4.data.Bank;
 import org.jlab.jnp.hipo4.data.Event;
