@@ -16,9 +16,9 @@ import java.util.Map;
 
 public class MultiClustering_atof_tdc_v2 {
 
-    private static final double Z_THRESHOLD = 200.0;
-    private static final double PHI_THRESHOLD = 0.2;
-    private static final double TIME_THRESHOLD = 2.5;
+    private static final double Z_THRESHOLD = 300.0;
+    private static final double PHI_THRESHOLD = 0.3;
+    private static final double TIME_THRESHOLD = 3.0;
     private static final double VEFF = 200.0;
     private static final int NUM_BARS = 60;
     private static final int WEDGES_PER_BAR = 10;
@@ -113,9 +113,8 @@ public class MultiClustering_atof_tdc_v2 {
 
     private static List<Cluster> formBarClusters(List<Hit> barHits) {
         List<Cluster> clusters = new ArrayList<>();
-        int clusterId = 0;
-
         Map<Integer, List<Hit>> hitsByComponent = new HashMap<>();
+
         for (Hit hit : barHits) {
             hitsByComponent.computeIfAbsent(hit.component, k -> new ArrayList<>()).add(hit);
         }
@@ -123,16 +122,20 @@ public class MultiClustering_atof_tdc_v2 {
         for (Map.Entry<Integer, List<Hit>> entry : hitsByComponent.entrySet()) {
             List<Hit> hits = entry.getValue();
 
-            if (hits.size() == 2) {
-                Hit leftHit = hits.get(0);
-                Hit rightHit = hits.get(1);
+            Hit leftHit = null;
+            Hit rightHit = null;
 
-                double zBar = (VEFF / 2.0) * (rightHit.time - leftHit.time);
+            for (Hit hit : hits) {
+                if (hit.order == 0) leftHit = hit;
+                if (hit.order == 1) rightHit = hit;
+            }
+
+            if (leftHit != null && rightHit != null) {
+                double z = (VEFF / 2.0) * (rightHit.time - leftHit.time);
                 double tMin = Math.min(leftHit.time, rightHit.time);
                 double energy = leftHit.tot + rightHit.tot;
 
-                Cluster cluster = new Cluster(zBar, leftHit.phi, tMin, energy);
-                cluster.id = clusterId++;
+                Cluster cluster = new Cluster(z, leftHit.phi, tMin, energy, false); // Exclude Z for Bar clusters
                 cluster.hits.add(leftHit);
                 cluster.hits.add(rightHit);
 
@@ -145,38 +148,26 @@ public class MultiClustering_atof_tdc_v2 {
 
     private static List<Cluster> formBarWedgeClusters(List<Cluster> barClusters, List<Hit> wedgeHits) {
         List<Cluster> clusters = new ArrayList<>();
-        int clusterId = barClusters.size();
 
         for (Cluster barCluster : barClusters) {
-            Cluster combinedCluster = new Cluster(barCluster.z, barCluster.phi, barCluster.time, barCluster.energy);
-            combinedCluster.id = clusterId++;
+            Cluster combinedCluster = new Cluster(barCluster.z, barCluster.phi, barCluster.time, barCluster.energy, true); // Include Z for Bar+Wedge clusters
             combinedCluster.hits.addAll(barCluster.hits);
 
             for (Hit wedgeHit : wedgeHits) {
-                if (wedgeHit.component == barCluster.hits.get(0).component) {
+                if (wedgeHit.component / WEDGES_PER_BAR == barCluster.hits.get(0).component / WEDGES_PER_BAR) {
                     double deltaZ = Math.abs(barCluster.z - wedgeHit.z);
                     double deltaPhi = Math.abs(barCluster.phi - wedgeHit.phi);
                     double deltaTime = Math.abs(barCluster.time - wedgeHit.time);
 
                     if (deltaZ < Z_THRESHOLD && deltaPhi < PHI_THRESHOLD && deltaTime < TIME_THRESHOLD) {
-                        boolean isUniqueLayer = true;
-                        for (Hit existingHit : combinedCluster.hits) {
-                            if (existingHit.layer == wedgeHit.layer) {
-                                isUniqueLayer = false;
-                                break;
-                            }
-                        }
-
-                        if (isUniqueLayer) {
-                            combinedCluster.hits.add(wedgeHit);
-                            combinedCluster.energy += wedgeHit.tot;
-                            combinedCluster.time = Math.min(combinedCluster.time, wedgeHit.time);
-                        }
+                        combinedCluster.hits.add(wedgeHit);
+                        combinedCluster.energy += wedgeHit.tot;
+                        combinedCluster.time = Math.min(combinedCluster.time, wedgeHit.time);
                     }
                 }
             }
 
-            if (combinedCluster.hits.size() >= 3) {
+            if (combinedCluster.hits.size() > barCluster.hits.size()) {
                 clusters.add(combinedCluster);
             }
         }
@@ -187,19 +178,21 @@ public class MultiClustering_atof_tdc_v2 {
     private static void printHits(List<Hit> hits, String type) {
         System.out.printf("\n%s Hits (%d total):\n", type, hits.size());
         for (Hit hit : hits) {
-            System.out.printf("  Hit -> Sector: %d, Layer: %d, Component: %d, Order: %d, TDC: %d, ToT: %d, Time: %.2f ns, Z: %.2f mm, Phi: %.2f rad\n",
-                    hit.sector, hit.layer, hit.component, hit.order, hit.tdc, hit.tot, hit.time, hit.z, hit.phi);
+            System.out.printf("  Hit -> Sector: %d, Layer: %d, Component: %d, Order: %d, TDC: %d, ToT: %d, Time: %.2f ns, %sPhi: %.2f rad\n",
+                    hit.sector, hit.layer, hit.component, hit.order, hit.tdc, hit.tot, hit.time,
+                    (hit.layer != 0 ? String.format("Z: %.2f mm, ", hit.z) : ""), hit.phi);
         }
     }
 
     private static void printClusters(List<Cluster> clusters, String type) {
         System.out.printf("\n%s Clusters (%d total):\n", type, clusters.size());
         for (Cluster cluster : clusters) {
-            System.out.printf("  Cluster ID: %d -> Z: %.2f mm, Phi: %.2f rad, Time: %.2f ns, Energy: %.2f MeV, Size: %d\n",
-                    cluster.id, cluster.z, cluster.phi, cluster.time, cluster.energy, cluster.hits.size());
+            System.out.printf("  Cluster ID: %d -> %sPhi: %.2f rad, Time: %.2f ns, Energy: %.2f MeV, Size: %d\n",
+                    cluster.id, (cluster.includeZ ? String.format("Z: %.2f mm, ", cluster.z) : ""), cluster.phi, cluster.time, cluster.energy, cluster.hits.size());
             for (Hit hit : cluster.hits) {
-                System.out.printf("    Hit -> Sector: %d, Layer: %d, Component: %d, Order: %d, TDC: %d, ToT: %d, Time: %.2f ns, Z: %.2f mm, Phi: %.2f rad\n",
-                        hit.sector, hit.layer, hit.component, hit.order, hit.tdc, hit.tot, hit.time, hit.z, hit.phi);
+                System.out.printf("    Hit -> Sector: %d, Layer: %d, Component: %d, Order: %d, TDC: %d, ToT: %d, Time: %.2f ns, %sPhi: %.2f rad\n",
+                        hit.sector, hit.layer, hit.component, hit.order, hit.tdc, hit.tot, hit.time,
+                        (hit.layer != 0 ? String.format("Z: %.2f mm, ", hit.z) : ""), hit.phi);
             }
         }
     }
@@ -209,10 +202,12 @@ public class MultiClustering_atof_tdc_v2 {
             Cluster cluster = clusters.get(i);
             recBank.putShort("id", i, (short) cluster.id);
             recBank.putShort("nhits", i, (short) cluster.hits.size());
-            recBank.putFloat("z", i, (float) cluster.z);
             recBank.putFloat("phi", i, (float) cluster.phi);
             recBank.putFloat("time", i, (float) cluster.time);
             recBank.putFloat("energy", i, (float) cluster.energy);
+            if (cluster.includeZ) {
+                recBank.putFloat("z", i, (float) cluster.z);
+            }
         }
     }
 
@@ -234,18 +229,19 @@ public class MultiClustering_atof_tdc_v2 {
     }
 
     static class Cluster {
-        double z, phi, time, energy;
-        List<Hit> hits = new ArrayList<>();
         int id;
+        double z, phi, time, energy;
+        boolean includeZ;
+        List<Hit> hits = new ArrayList<>();
 
-        Cluster(double z, double phi, double time, double energy) {
+        Cluster(double z, double phi, double time, double energy, boolean includeZ) {
             this.z = z;
             this.phi = phi;
             this.time = time;
             this.energy = energy;
+            this.includeZ = includeZ;
         }
     }
 }
-
 
 
