@@ -333,7 +333,7 @@ public class ATOFHitTDCResiduals {
             for (int hitIndex = 0; hitIndex < numHits; hitIndex++) {
                 Hit hit = createHit(atofTdcBank, hitIndex);
                 if (hit.layer == 0) barHits.add(hit);
-                else if (hit.layer >= 10 && hit.layer <= 19) wedgeHits.add(hit);
+                else  wedgeHits.add(hit);
             }
 
             if (barHits.size() >= 2) {

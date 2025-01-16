@@ -209,7 +209,6 @@ public class MultiClustering_atof_v1 {
     }
 }
 
-
 /*
 //TDC version 
 package org.jlab.rec.atof.MultiClustering_ATOF_TDC;

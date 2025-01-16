@@ -265,7 +265,7 @@ public class ATOFTDCDataReader {
 
             if (layer == 0) {
                 barHits.add(new Hit(layer, component, time));
-            } else if (layer >= 10 && layer <= 19) {
+            } else if (layer >0 && layer <4) {
                 wedgeHits.add(new Hit(layer, component, time));
             }
         }

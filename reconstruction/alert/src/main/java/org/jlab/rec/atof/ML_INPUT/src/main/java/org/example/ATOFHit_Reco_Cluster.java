@@ -292,7 +292,7 @@ public class ATOFHit_Reco_Cluster_TDC {
             List<Hit> wedgeHits = new ArrayList<>();
             for (Hit hit : hits) {
                 if (hit.getLayer() == 0) barHits.add(hit);
-                else if (hit.getLayer() >= 10 && hit.getLayer() <= 19) wedgeHits.add(hit);
+                else if (hit.getLayer() >0 && hit.getLayer() <4) wedgeHits.add(hit);
             }
 
             if (barHits.isEmpty() && wedgeHits.isEmpty()) {

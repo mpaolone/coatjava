@@ -263,7 +263,7 @@ public class ATOFDataReader {
             float time = tdc * TDC_RESOLUTION;
 
             if (layer == 0) barHits.add(new Hit(component, order, time));
-            if (layer >= 10 && layer <= 19) {
+            if (layer >0 && layer <4) {
                 float zWedge = calculateZWedge(component);
                 float phiWedge = calculatePhi(component);
                 wedgeHits.add(new Hit(zWedge, phiWedge, time));
